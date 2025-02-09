@@ -1,0 +1,276 @@
+/*admin create event*/
+.create-event-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-event-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+
+  color: #dcc8b4 ;
+  border-bottom: 3px solid #dcc8b4;
+}
+
+.create-event-container label {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.create-event-container input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: calc(100% - 22px);
+  color:#777;
+  background-color: white;
+  color: #666;
+}
+
+
+.create-event-container input::placeholder {
+color: #777; 
+
+}
+
+
+.create-event-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background: linear-gradient(135deg, #dcc8b4, #b89d89);
+
+}
+
+.create-event-container button:hover {
+  background: linear-gradient(135deg, #b89d89, #dcc8b4);
+  transform: scale(1.02); /* Slight zoom effect */
+}
+.create-event-container button:disabled {
+  background-color: #aaa;
+}
+
+.create-event-container button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.create-event-container .error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.create-event-container .success-message {
+  color: green;
+  font-weight: bold;
+  text-align: center;
+}
+
+.create-event-container p {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.support-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.support-footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.support-footer a:hover {
+  text-decoration: underline;
+}
+
+form {
+  width: 100%;
+}
+
+form .error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Add this at the end of your CreateEvent.css file */
+
+/* Event URL Container */
+.event-url {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f7f7f7; /* Light background to make it stand out */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-align: center;
+}
+
+/* Event URL Text */
+.event-url p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Event URL Link */
+.event-url a {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+  background: linear-gradient(135deg, #dcc8b4, #b89d89);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 300;
+}
+
+/* Hover effect for the link */
+.event-url a:hover {
+  background: linear-gradient(135deg, #b89d89, #dcc8b4);
+  transform: scale(1.02); /* Slight zoom effect */
+}
+
+
+/* Styling for the event table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead th {
+  background-color: #f2f2f2;
+  font-size: 14px;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody td {
+  font-size: 12px;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+th {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+table th, table td {
+  text-align: left;
+}
+
+
+/* Add this style to your CSS file */
+.table-link {
+  cursor: pointer;
+  color: #007bff; /* Change this to match your theme */
+  text-decoration: underline; /* Optional: adds underline for links */
+}
+
+.table-link:hover {
+  text-decoration: none; /* Optional: removes underline on hover */
+}
+
+
+.table-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  width: 100%; /* Adjust the width to the container */
+}
+
+.table {
+  width: 100%; /* Make the table take the full width of the container */
+  border-collapse: collapse; /* Optional: for better table styling */
+}
+
+.table th, .table td {
+  padding: 10px; /* Add some padding for better spacing */
+  text-align: left; /* Align text to the left */
+  border: 1px solid #ddd; /* Add border to table cells */
+}
+
+.table th {
+  background-color: #f2f2f2; /* Optional: background color for header */
+}
+.qr-code {
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.qr-code h4 {
+  margin-bottom: 10px;
+}
+
+.download-qr-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.download-qr-icon:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px; /* Space between the options */
+  align-items: center;
+}
+.radio-group label {
+  display: flex;
+  align-items: center;
+}
+
+.uploadFile{
+  width: calc(100% - 22px);
+}
