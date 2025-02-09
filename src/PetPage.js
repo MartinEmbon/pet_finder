@@ -108,40 +108,41 @@ function Pet() {
   return (
     <div>
       <Helmet>
-        <title>{petInfo.petName}'s Profile</title>
+        <title>Perfil de {petInfo.petName}</title>
       </Helmet>
       <Header />
       <div className="pet-card">
         <img src={petInfo.coverImageUrl} alt={petInfo.petName} />
         <div className="info">
-          <h1>{petInfo.petName}</h1>
-          <p><strong>About me:</strong> {petInfo.customMessage}</p>
+          <h1>Hola! me llamo {petInfo.petName}</h1>
+          <p><strong>Sobre mí:</strong> {petInfo.customMessage}</p>
           <p className="pet-type">
-            <strong>Pet Type:</strong> {petInfo.petType}
+            <strong>Raza:</strong> {petInfo.petType}
           </p>
           <p>
-            <strong>Description:</strong> {petInfo.description}
+            <strong>Cómo me describen:</strong> {petInfo.description}
           </p>
           <p>
-            <strong>Location:</strong> {petInfo.location}
+            <strong>¿Dónde vivo?:</strong> {petInfo.location}
           </p>
           {petInfo.contactName && (
             <div className="contact-info">
-              <strong>Contact Name:</strong> {petInfo.contactName}
+              <strong>Nombre del dueño:</strong> {petInfo.contactName}
             </div>
           )}
-       {petInfo.contactPhone && (
+    {petInfo.contactPhone && (
   <div className="contact-info">
-    <strong>Contact Phone:</strong>{" "}
-    <a
-      target="_blank"
-      href={`https://wa.me/${petInfo.contactPhone}`}
-      className="whatsapp-link"
-      rel="noreferrer"
-    >
-       {petInfo.contactPhone}
-      <i className="fab fa-whatsapp"></i> {/* WhatsApp icon */}
-    </a>
+    <p><strong>Si me ves, avisale a mis papás al:</strong>{" "}
+      <a
+        target="_blank"
+        href={`https://wa.me/${petInfo.contactPhone}`}
+        className="whatsapp-link"
+        rel="noreferrer"
+      >
+        {petInfo.contactPhone}
+        <i className="fab fa-whatsapp"></i> {/* WhatsApp icon */}
+      </a>
+    </p>
   </div>
 )}
 
