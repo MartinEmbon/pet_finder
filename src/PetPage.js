@@ -25,6 +25,7 @@ function Pet() {
     ? translationsAlbumPage[lang]
     : translationsAlbumPage["en"]; // Fallback to 'en'
 
+
   // Check petId immediately and navigate if invalid
   useEffect(() => {
     if (!petId) {
@@ -38,14 +39,15 @@ function Pet() {
       const response = await axios.get(`${API_LIST_PET}`, {
         params: { petId },
       });
-      console.log(response.data);
+
+      console.log(response.data.contactName);
+      console.log(response.data.contactPhone);
 
       if (response.status === 404) {
         navigate("/pet/pet-not-found");
         return;
       }
 
-      // Assuming the response structure includes a 'contactInfo' object with 'contactName' and 'contactPhone'
       const {
         coverImageUrl,
         customMessage,
@@ -53,11 +55,11 @@ function Pet() {
         petType,
         description,
         location,
-        contactInfo
+        contactPhone,
+        contactName
       } = response.data;
 
       // Check if contactInfo exists and extract contactName and contactPhone
-      const { contactName, contactPhone } = contactInfo || {};
 
       setPetInfo({
         coverImageUrl,
@@ -66,10 +68,10 @@ function Pet() {
         petType,
         description,
         location,
-        contactName, // Added contactName here
-        contactPhone, // Added contactPhone here
+        contactPhone,
+        contactName
       });
-
+      console.log(response.data);
       setLoading(false);
       setIsLoadingEventDetails(false);
     } catch (error) {
@@ -113,7 +115,7 @@ function Pet() {
         <img src={petInfo.coverImageUrl} alt={petInfo.petName} />
         <div className="info">
           <h1>{petInfo.petName}</h1>
-          <p>{petInfo.customMessage}</p>
+          <p><strong>About me:</strong> {petInfo.customMessage}</p>
           <p className="pet-type">
             <strong>Pet Type:</strong> {petInfo.petType}
           </p>
@@ -124,15 +126,25 @@ function Pet() {
             <strong>Location:</strong> {petInfo.location}
           </p>
           {petInfo.contactName && (
+            <div className="contact-info">
+              <strong>Contact Name:</strong> {petInfo.contactName}
+            </div>
+          )}
+       {petInfo.contactPhone && (
   <div className="contact-info">
-    <strong>Contact Name:</strong> {petInfo.contactName}
+    <strong>Contact Phone:</strong>{" "}
+    <a
+      target="_blank"
+      href={`https://wa.me/${petInfo.contactPhone}`}
+      className="whatsapp-link"
+      rel="noreferrer"
+    >
+       {petInfo.contactPhone}
+      <i className="fab fa-whatsapp"></i> {/* WhatsApp icon */}
+    </a>
   </div>
 )}
-{petInfo.contactPhone && (
-  <div className="contact-info">
-    <strong>Contact Phone:</strong> {petInfo.contactPhone}
-  </div>
-)}
+
         </div>
       </div>
     </div>

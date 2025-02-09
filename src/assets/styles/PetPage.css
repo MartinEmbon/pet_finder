@@ -6,7 +6,7 @@
 }
 
 .App-logo {
-    width: 80vw;
+    width: 70vw;
     /* Adjusts to 60% of the viewport width */
     max-width: 400px;
     /* Ensures the logo doesn’t get too large */
@@ -117,4 +117,26 @@ body {
       width: 80%; /* More space on larger screens */
     }
   }
+  .contact-info {
+    margin-top: 10px;
+    display: flex;
+    align-items: center; /* Align items horizontally */
+  }
   
+  .contact-info strong {
+    margin-right: 10px; /* Add space between the label and the phone number */
+  }
+  
+  .whatsapp-link {
+    display: flex;
+    align-items: center; /* Align the text and icon vertically */
+    justify-content: flex-start; /* Keep the text and icon at the start */
+    width: auto; /* No need for 100% width */
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Maintain the original color */
+  }
+  
+  .whatsapp-link i {
+    margin-left: 10px; /* Add space between phone number and icon */
+    font-size: 20px; /* WhatsApp icon size */
+  }

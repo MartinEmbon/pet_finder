@@ -132,9 +132,9 @@ const CreateEvent = () => {
                 petType,
                 dateRegistry,
                 description,
-location,
-ownerName,
-contactPhone
+                location,
+                ownerName,
+                contactPhone
             };
 
             // Handle file upload separately if needed
@@ -296,7 +296,7 @@ contactPhone
                     placeholder="ID de tu mascota"
                     required
                 />
-               
+
                 <label>Nombre de tu mascota:</label>
                 <input
                     type="text"
@@ -349,9 +349,9 @@ contactPhone
                     required
                 />
 
-<label>Teléfono de contacto</label> {/* New input field */}
+                <label>Teléfono de contacto</label> {/* New input field */}
                 <input
-                    type="text"
+                    type="number"
                     value={contactPhone}
                     onChange={(e) => setContactPhone(e.target.value)}
                     placeholder="Teléfono de contacto"
@@ -367,13 +367,13 @@ contactPhone
                     required
                 />
 
-<label>Mensaje personalizado:</label>
-        <input
-          type="text"
-          value={customMessage}
-          onChange={(e) => setCustomMessage(e.target.value)}
-          placeholder="Mensaje personalizado"
-        />
+                <label>Mensaje personalizado:</label>
+                <input
+                    type="text"
+                    value={customMessage}
+                    onChange={(e) => setCustomMessage(e.target.value)}
+                    placeholder="Mensaje personalizado"
+                />
 
                 <label>Token de autorización:</label>
                 <input
