@@ -1,0 +1,120 @@
+.App-header {
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.App-logo {
+    width: 80vw;
+    /* Adjusts to 60% of the viewport width */
+    max-width: 400px;
+    /* Ensures the logo doesn’t get too large */
+    height: auto;
+    /* Maintain aspect ratio */
+}
+
+/* Page background */
+body {
+    background-color: #f9f9f9; /* Light neutral background for the entire page */
+    font-family: 'Georgia', serif; /* Georgia font as requested */
+    color: #333; /* Default text color */
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    min-height: 100vh; /* Ensure it takes up the full height of the viewport */
+    margin: 0; /* Remove default margin */
+  }
+  
+  /* Pet Card Styles */
+  .pet-card {
+    width: 85%; /* Percentage width */
+    max-width: 400px; /* Limiting max width on larger screens */
+    background-color: #fff; /* White background for the card */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid #e6e6e6; /* Light border for separation */
+    margin: 0 auto; /* Center horizontally */
+  }
+  
+  /* Pet Image */
+  .pet-card img {
+    width: 100%; /* Image takes full width */
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 4px solid #d1e6d1; /* Soft green border for the image */
+  }
+  
+  /* Title (Pet Name) */
+  .pet-card h1 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #4caf50; /* Green, representing nature/pets */
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  /* Description Text */
+  .pet-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.4;
+    margin: 5px 0;
+  }
+  
+  /* Info Section */
+  .pet-card .info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Bold Labels */
+  .pet-card .info strong {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Pet Type */
+  .pet-card .pet-type {
+    font-size: 1rem;
+    color: #8b8b8b; /* Slightly grayish for secondary info */
+  }
+  
+  /* Contact Info Section */
+  .pet-card .contact-info {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background-color: #e6f7e6; /* Soft green background for contact info */
+    color: #388e3c; /* Dark green text for the contact info */
+    border: 1px solid #d1e6d1; /* Light green border for contact section */
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 600px) {
+    .pet-card {
+      width: 85%; /* Slightly more space on mobile */
+      padding: 15px;
+    }
+  
+    .pet-card h1 {
+      font-size: 1.4rem;
+    }
+  
+    .pet-card p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .pet-card {
+      width: 80%; /* More space on larger screens */
+    }
+  }
+  

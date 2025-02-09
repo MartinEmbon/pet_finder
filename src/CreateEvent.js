@@ -6,7 +6,7 @@ import axios from "axios";
 import "./assets/styles/CreateEvent.css";
 import { QRCodeCanvas } from "qrcode.react";
 
-import { API_PET_URL, API_GET_EVENT_LIST } from "./endpoints";
+import { API_PET_URL } from "./endpoints";
 
 const SECRET_KEY = "Catalina83";
 
@@ -18,7 +18,8 @@ const CreateEvent = () => {
     const [petType, setPetType] = useState("");
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
-    const [contactInfo, setContactInfo] = useState("");
+    const [ownerName, setOwnerName] = useState("");
+    const [contactPhone, setContactPhone] = useState("");
 
     const [coverImageUrl, setCoverImageUrl] = useState("");
     const [coverImageFile, setCoverImageFile] = useState(null); // For file upload
@@ -132,7 +133,8 @@ const CreateEvent = () => {
                 dateRegistry,
                 description,
 location,
-contactInfo
+ownerName,
+contactPhone
             };
 
             // Handle file upload separately if needed
@@ -154,7 +156,7 @@ contactInfo
                 setSuccessMessage("¡La mascota se ha creado con éxito!");
 
                 // Generate and set the event URL
-                const generatedUrl = `https://localhost:4001/album?petId=${petId}`;
+                const generatedUrl = `https://pet-finder-navy.vercel.app/pet?petId=${petId}`;
                 setEventUrl(generatedUrl);
 
                 // Clear inputs
@@ -168,7 +170,8 @@ contactInfo
                 setSecret(""); // Clear secret input
                 setDescription("")
                 setLocation("")
-                setContactInfo("")
+                setOwnerName("")
+                setContactPhone("")
             } else {
                 setErrorMessage("Hubo un error al crear el evento.");
             }
@@ -293,13 +296,7 @@ contactInfo
                     placeholder="ID de tu mascota"
                     required
                 />
-                {/* <label>Mensaje personalizado:</label>
-        <input
-          type="text"
-          value={customMessage}
-          onChange={(e) => setCustomMessage(e.target.value)}
-          placeholder="Mensaje personalizado"
-        /> */}
+               
                 <label>Nombre de tu mascota:</label>
                 <input
                     type="text"
@@ -343,12 +340,21 @@ contactInfo
                     required
                 />
 
-                <label>Información de contacto</label> {/* New input field */}
+                <label>Nombre de contacto</label> {/* New input field */}
                 <input
                     type="text"
-                    value={contactInfo}
-                    onChange={(e) => setContactInfo(e.target.value)}
-                    placeholder="Información de contacto"
+                    value={ownerName}
+                    onChange={(e) => setOwnerName(e.target.value)}
+                    placeholder="Nombre de contacto"
+                    required
+                />
+
+<label>Teléfono de contacto</label> {/* New input field */}
+                <input
+                    type="text"
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                    placeholder="Teléfono de contacto"
                     required
                 />
 
@@ -361,7 +367,13 @@ contactInfo
                     required
                 />
 
-
+<label>Mensaje personalizado:</label>
+        <input
+          type="text"
+          value={customMessage}
+          onChange={(e) => setCustomMessage(e.target.value)}
+          placeholder="Mensaje personalizado"
+        />
 
                 <label>Token de autorización:</label>
                 <input
