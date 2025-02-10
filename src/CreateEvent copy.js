@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import axios from "axios";
 // import "./App.css";
-import "./assets/styles/CreateEvent.css";
+// import "./assets/styles/CreateEvent.css";
 import { QRCodeCanvas } from "qrcode.react";
 
 import { API_PET_URL } from "./endpoints";
@@ -13,15 +13,9 @@ const SECRET_KEY = "Catalina83";
 const CreateEvent = () => {
 
     const [petId, setPetId] = useState("");
-    const [petType, setPetType] = useState(""); // tipo
-    const [petName, setPetName] = useState(""); // nombre
-    const [petGender, setPetGender] = useState(""); // género
-    const [petBreed, setPetBreed] = useState(""); // raza
-    const [dateBirth, setDateBirth] = useState(""); // fecha nacimiento
-    const [petCharacter, setPetCharacter] = useState(""); // caracter
-    const [microChip, setMicrochip] = useState(""); // microchip
-    const [microChipNumber, setMicrochipNumber] = useState(""); // microchip
-
+    const [petName, setPetName] = useState("");
+    const [dateRegistry, setDateRegistry] = useState("");
+    const [petType, setPetType] = useState("");
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
     const [ownerName, setOwnerName] = useState("");
@@ -50,25 +44,6 @@ const CreateEvent = () => {
 
 
     const hiddenCanvasRef = useRef(null); // For the hidden QR code canvas
-
-    // Function to calculate the age based on the birth date
-  const calculateAge = (birthDate) => {
-    if (!birthDate) return null;
-    const birthDateObj = new Date(birthDate);
-    const today = new Date();
-    let age = today.getFullYear() - birthDateObj.getFullYear();
-    const month = today.getMonth();
-    if (month < birthDateObj.getMonth() || (month === birthDateObj.getMonth() && today.getDate() < birthDateObj.getDate())) {
-      age--; // Subtract 1 if the birthdate hasn't occurred yet this year
-    }
-    return age;
-  };
-
-  const handleDateChange = (e) => {
-    setDateBirth(e.target.value);
-  };
-
-
 
     const downloadQRCode = () => {
         const qrCanvas = hiddenCanvasRef.current.querySelector("canvas");
@@ -155,11 +130,7 @@ const CreateEvent = () => {
                 customMessage,
                 petName,
                 petType,
-                petBreed,
-                petCharacter,
-                dateBirth,
-                microChip,
-                microChipNumber,
+                dateRegistry,
                 description,
                 location,
                 ownerName,
@@ -195,11 +166,7 @@ const CreateEvent = () => {
                 setCustomMessage("");
                 setPetName("");
                 setPetType("");
-                setPetCharacter("")
-                setPetBreed("")
-                setDateBirth("");
-                setMicrochip("")
-                setMicrochipNumber("")
+                setDateRegistry("");
                 setSecret(""); // Clear secret input
                 setDescription("")
                 setLocation("")
@@ -338,73 +305,14 @@ const CreateEvent = () => {
                     placeholder="Nombre de tu mascota"
                     required
                 />
-
-{/* <label>Género:</label>
-                <input
-                    type="text"
-                    value={petGender}
-                    onChange={(e) => setPetGender(e.target.value)}
-                    placeholder="Nombre de tu mascota"
-                    required
-                /> */}
-<label>Género:</label>
-<div className="gender-radio-group">
-    <label>
-        <input
-            type="radio"
-            value="Male"
-            checked={petGender === "Male"}
-            onChange={(e) => setPetGender(e.target.value)}
-        />
-        Macho
-    </label>
-    <label>
-        <input
-            type="radio"
-            value="Female"
-            checked={petGender === "Female"}
-            onChange={(e) => setPetGender(e.target.value)}
-        />
-        Hembra
-    </label>
-</div>
-
-
-<label className="after-race">Raza:</label>
-                <input
-                    type="text"
-                    value={petBreed}
-                    onChange={(e) => setPetBreed(e.target.value)}
-                    placeholder="Raza de tu mascota"
-                    required
-                />
-
-<label>Carácter:</label>
-                <input
-                    type="text"
-                    value={petCharacter}
-                    onChange={(e) => setPetCharacter(e.target.value)}
-                    placeholder="Carácter de tu mascota"
-                    required
-                />
-
-
-                <label>Fecha de nacimiento de tu mascota:</label>{dateBirth && (
-          <span style={{ marginLeft: "10px", fontSize: "14px", fontWeight: "bold" }}>
-            {`Edad: ${calculateAge(dateBirth)} años`}
-          </span>
-        )}
+                <label>Fecha de registro de tu mascota:</label>
                 <input
                     type="date"
-                    value={dateBirth}
-                    // onChange={(e) => setDateBirth(e.target.value)}
-                    onChange={handleDateChange}
-
-                    placeholder="Fecha de nacimiento:"
+                    value={dateRegistry}
+                    onChange={(e) => setDateRegistry(e.target.value)}
+                    placeholder="Fecha de registro:"
                     required
                 />
-
-
                 <label>Tipo de mascota:</label> {/* New input field */}
                 <input
                     type="text"
@@ -422,41 +330,6 @@ const CreateEvent = () => {
                     placeholder="Descripción de tu mascota"
                     required
                 />
-<label>Microchip:</label>
-<div className="gender-radio-group">
-    <label>
-        <input
-            type="radio"
-            value="Yes"
-            checked={microChip === "Yes"}
-            onChange={(e) => setMicrochip(e.target.value)}
-        />
-        Si
-    </label>
-    <label>
-        <input
-            type="radio"
-            value="No"
-            checked={microChip === "No"}
-            onChange={(e) => setMicrochip(e.target.value)}
-        />
-        No
-    </label>
-</div>
-
-{microChip === "Yes" && (
-    <>
-        <label>Número de microchip</label> {/* New input field */}
-        <input
-            type="text"
-            value={microChipNumber}
-            onChange={(e) => setMicrochipNumber(e.target.value)}
-            placeholder="Número de microchip"
-            required
-        />
-    </>
-)}
-
 
                 <label>Location (Last Seen or Found)</label> {/* New input field */}
                 <input
