@@ -11,7 +11,6 @@ import { API_PET_URL } from "./endpoints";
 const SECRET_KEY = "Catalina83";
 
 const CreateEvent = () => {
-    const [step, setStep] = useState(1); // Step state to control form flow
 
     const [petId, setPetId] = useState("");
     const [petType, setPetType] = useState(""); // tipo
@@ -132,14 +131,6 @@ const CreateEvent = () => {
             console.error("Error uploading QR code:", error);
             setErrorMessageFileUpload("Error al subir el código QR.");
         }
-    };
-
-    const handleNext = () => {
-        setStep(step + 1);
-    };
-
-    const handlePrev = () => {
-        setStep(step - 1);
     };
 
     const handleCreateEvent = async (event) => {
@@ -284,7 +275,7 @@ const CreateEvent = () => {
             <Link to="/">
                 <Header />
             </Link>
-            <h2>Creá el perfil de tu mascota</h2>
+            <h2>Crear Perfil de tu Mascota</h2>
 
             {/* Separate Form for File Upload */}
             {/* <h2>Subir Imagen de Portada</h2> */}
@@ -338,14 +329,7 @@ const CreateEvent = () => {
                     placeholder="ID de tu mascota"
                     required
                 />
- <label>Tipo de mascota:</label> {/* New input field */}
-                <input
-                    type="text"
-                    value={petType}
-                    onChange={(e) => setPetType(e.target.value)}
-                    placeholder="Tipo de mascota"
-                    required
-                />
+
                 <label>Nombre de tu mascota:</label>
                 <input
                     type="text"
@@ -421,7 +405,14 @@ const CreateEvent = () => {
                 />
 
 
-               
+                <label>Tipo de mascota:</label> {/* New input field */}
+                <input
+                    type="text"
+                    value={petType}
+                    onChange={(e) => setPetType(e.target.value)}
+                    placeholder="Tipo de mascota"
+                    required
+                />
 
                 <label>Descripción de tu mascota:</label> {/* New input field */}
                 <input

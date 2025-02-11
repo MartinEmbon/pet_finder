@@ -8,12 +8,17 @@ import { API_LIST_PET } from "./endpoints";
 import { translationsAlbumPage } from "./albumPageTranslation";
 
 import "./assets/styles/PetPage.css"
+import { prefetchDNS } from "react-dom";
 
 function Pet() {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const petId = queryParams.get("petId");
+  const [showOwnerInfo, setShowOwnerInfo] = useState(false);
+
+  const [isGeneralInfoVisible, setIsGeneralInfoVisible] = useState(true);
+  const [isOwnerInfoVisible, setIsOwnerInfoVisible] = useState(true);
 
   const [petInfo, setPetInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +30,24 @@ function Pet() {
     ? translationsAlbumPage[lang]
     : translationsAlbumPage["en"]; // Fallback to 'en'
 
-
+    const calculateAge = (dateBirth) => {
+      if (!dateBirth) return "Desconocida"; // Handle missing data
+    
+      const birthDate = new Date(dateBirth);
+      const today = new Date();
+      
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+      // Adjust age if the birth date hasn't occurred yet this year
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+    
+      if (age === 0) return "Menos de un año"; 
+      if (age === 1) return "1 año"; 
+      return `${age} años`; // Plural case
+    };
   // Check petId immediately and navigate if invalid
   useEffect(() => {
     if (!petId) {
@@ -56,7 +78,13 @@ function Pet() {
         description,
         location,
         contactPhone,
-        contactName
+        contactName,
+        petBreed,
+        petCharacter,
+        microChip,
+        microChipNumber,
+        dateBirth
+        
       } = response.data;
 
       // Check if contactInfo exists and extract contactName and contactPhone
@@ -69,7 +97,12 @@ function Pet() {
         description,
         location,
         contactPhone,
-        contactName
+        contactName,
+        petBreed,
+        petCharacter,
+        microChip,
+        microChipNumber,
+        dateBirth
       });
       console.log(response.data);
       setLoading(false);
@@ -107,50 +140,116 @@ function Pet() {
 
   return (
     <div>
-      <Helmet>
-        <title>Perfil de {petInfo.petName}</title>
-      </Helmet>
-      <Header />
-      <div className="pet-card">
-        <img src={petInfo.coverImageUrl} alt={petInfo.petName} />
+    <Helmet>
+      <title>{showOwnerInfo ? `Contacto de ${petInfo.petName}` : `Perfil de ${petInfo.petName}`}</title>
+    </Helmet>
+    <Header />
+   
+    <div className="pet-card">
+        {/* ✅ Pet Image & Name Always Visible */}
         <div className="info">
-          <h1>Hola! me llamo {petInfo.petName}</h1>
-          <p><strong>Sobre mí:</strong> {petInfo.customMessage}</p>
-          <p className="pet-type">
-            <strong>Raza:</strong> {petInfo.petType}
-          </p>
-          <p>
-            <strong>Cómo me describen:</strong> {petInfo.description}
-          </p>
-          <p>
-            <strong>¿Dónde vivo?:</strong> {petInfo.location}
-          </p>
-          {petInfo.contactName && (
-            <div className="contact-info">
-              <strong>Nombre del dueño:</strong> {petInfo.contactName}
-            </div>
-          )}
-    {petInfo.contactPhone && (
-  <div className="contact-info">
-    <p><strong>Si me ves, avisale a mis papás al:</strong>{" "}
-      <a
-        target="_blank"
-        href={`https://wa.me/${petInfo.contactPhone}`}
-        className="whatsapp-link"
-        rel="noreferrer"
-      >
-        {petInfo.contactPhone}
-        <i className="fab fa-whatsapp"></i> {/* WhatsApp icon */}
-      </a>
-    </p>
-  </div>
-)}
+        <img src={petInfo.coverImageUrl} alt={petInfo.petName} />
+<div>
+          <h1>¡Hola! soy {petInfo.petName}</h1>
+          <h3 className="subtitle">Tengo {calculateAge(petInfo.dateBirth)}</h3>
+          </div>
+          {/* ✅ Toggle Between Pet Details & Owner Info */}
+          {!showOwnerInfo ? (
+            <>
+              <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
+              <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
+              <p><strong>Sobre mí:</strong> {petInfo.customMessage}</p>
+              
+              <p><strong>Cómo me describen:</strong> {petInfo.description}</p>
+              <p><strong>¿Dónde vivo?:</strong> {petInfo.location}    <a 
+          href={`https://www.google.com/maps?q=${encodeURIComponent(petInfo.location)}`} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="maps-link"
+        >
+          <i className="fas fa-map-marker-alt"></i>
+        </a></p> 
 
+              <div className="contact-card info">
+          
+               
+                <p>{petInfo.petCharacter}</p>
+               
+               
+              </div>
+            {/* Google Maps Link with FontAwesome Icon */}
+     
+              <button className="next-button" onClick={() => setShowOwnerInfo(true)}>
+                Ver Información del Dueño →
+              </button>
+            </>
+          ) : (
+            <>
+            
+              {/* Microchip Section */}
+
+      <div className="contact-card info">
+      <h2>Si me ves, ¡avisale a mis papás!</h2>
+        {/* Owner Info Section */}
+        <div className="collapsible-section">
+        <div 
+          className="section-header subcategory" 
+          onClick={() => setIsOwnerInfoVisible(!isOwnerInfoVisible)}
+        >
+          <strong>Contacto</strong>
+          <span className={`arrow ${isOwnerInfoVisible ? 'up' : 'down'}`}>&#x2191;</span>
+        </div>
+        {isOwnerInfoVisible && (
+          <div className="section-content">
+            <p><strong>Nombre:</strong> {petInfo.contactName}</p>
+            <p><strong>Teléfono: </strong>
+              <span className="phone-with-whatsapp">
+                {petInfo.contactPhone}
+                <a 
+                  target="_blank"
+                  href={`https://wa.me/54${petInfo.contactPhone}`}
+                  className="whatsapp-link"
+                  rel="noreferrer"
+                >
+                  <i className="fab fa-whatsapp"></i>
+                </a>
+              </span>
+            </p>
+          </div>
+        )}
+      </div>
+      {/* General Info Section */}
+      <div className="collapsible-section">
+        <div 
+          className="section-header" 
+       
+          onClick={() => setIsGeneralInfoVisible(!isGeneralInfoVisible)}
+        >
+          <strong>Info adicional</strong>
+          <span className={`arrow ${isGeneralInfoVisible ? 'up' : 'down'}`}>&#x2191;</span>
+        </div>
+        {isGeneralInfoVisible && (
+          <div className="section-content">
+            <p><strong>Microchip:</strong> {petInfo?.microChip}</p>
+            {petInfo?.microChip?.toLowerCase() === "yes" && petInfo?.microChipNumber && (
+              <p><strong>Microchip #:</strong> {petInfo.microChipNumber}</p>
+            )}
+          </div>
+        )}
+      </div>
+      
+    
+    </div>
+
+              <button className="back-button" onClick={() => setShowOwnerInfo(false)}>
+                ← Volver a Perfil
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
-
 }
 
 export default Pet;
