@@ -80,6 +80,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    
+    /* font-size: 12px; */
+
   }
   
   /* Bold Labels */
@@ -185,6 +188,16 @@ body {
   text-align: center;
 }
 
+.contact-card h3{
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.section-header strong{
+  color: white !important;
+  font-size: 1rem !important;
+}
+
 .pet-card .info{
   text-align: left;
 }
@@ -275,10 +288,12 @@ body {
 }
 
 /* Optional: Add spacing or margin to the content within the section */
-.section-content p {
+.section-content p strong{
   padding-left: 5px; 
   font-size: 1rem;
   color: #555;
+  line-height: 1.7;
+  margin: 5px 0;
 }
 
 /* Phone number with WhatsApp icon */
@@ -297,8 +312,4 @@ body {
 
 .whatsapp-link:hover {
   color: #128c7e; /* Darker green on hover */
-}
-
-.subcategory{
-  color: white !important;
 }

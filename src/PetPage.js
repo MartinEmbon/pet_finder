@@ -156,10 +156,13 @@ function Pet() {
           {/* ✅ Toggle Between Pet Details & Owner Info */}
           {!showOwnerInfo ? (
             <>
+               <div className="contact-card info">
+               <p> {petInfo.customMessage}</p>
+
+              </div>
               <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
               <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
-              <p><strong>Sobre mí:</strong> {petInfo.customMessage}</p>
-              
+            
               <p><strong>Cómo me describen:</strong> {petInfo.description}</p>
               <p><strong>¿Dónde vivo?:</strong> {petInfo.location}    <a 
           href={`https://www.google.com/maps?q=${encodeURIComponent(petInfo.location)}`} 
@@ -170,13 +173,7 @@ function Pet() {
           <i className="fas fa-map-marker-alt"></i>
         </a></p> 
 
-              <div className="contact-card info">
-          
-               
-                <p>{petInfo.petCharacter}</p>
-               
-               
-              </div>
+           
             {/* Google Maps Link with FontAwesome Icon */}
      
               <button className="next-button" onClick={() => setShowOwnerInfo(true)}>
@@ -189,7 +186,7 @@ function Pet() {
               {/* Microchip Section */}
 
       <div className="contact-card info">
-      <h2>Si me ves, ¡avisale a mis papás!</h2>
+      <h3>Si me ves, ¡avisale a mis papás!</h3>
         {/* Owner Info Section */}
         <div className="collapsible-section">
         <div 
@@ -226,14 +223,25 @@ function Pet() {
           onClick={() => setIsGeneralInfoVisible(!isGeneralInfoVisible)}
         >
           <strong>Info adicional</strong>
-          <span className={`arrow ${isGeneralInfoVisible ? 'up' : 'down'}`}>&#x2191;</span>
+            <span
+      className={`arrow ${isGeneralInfoVisible ? "up" : "down"}`}
+      style={{ color: "inherit" }}  // Ensure arrow color follows the inherited color
+    >
+      &#x2191;
+    </span>
         </div>
         {isGeneralInfoVisible && (
           <div className="section-content">
+             <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
+             <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
+             <p className="pet-type"><strong>Carácter:</strong> {petInfo.petCharacter}</p>
+             <p className="pet-type"><strong>Esterilización:</strong> {petInfo.microChip}</p>
             <p><strong>Microchip:</strong> {petInfo?.microChip}</p>
             {petInfo?.microChip?.toLowerCase() === "yes" && petInfo?.microChipNumber && (
               <p><strong>Microchip #:</strong> {petInfo.microChipNumber}</p>
+              
             )}
+
           </div>
         )}
       </div>
