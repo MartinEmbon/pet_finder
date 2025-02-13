@@ -1,16 +1,24 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { Link, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import axios from "axios";
 // import "./App.css";
 import "./assets/styles/CreateEvent.css";
 import { QRCodeCanvas } from "qrcode.react";
+import { logout } from "./slices/authSlice"; // Import the logout action
 
 import { API_PET_URL } from "./endpoints";
 
 const SECRET_KEY = "Catalina83";
 
 const CreateEvent = () => {
+
+    const navigate = useNavigate(); // Initialize useNavigate
+
+    const dispatch = useDispatch();
+
     const [step, setStep] = useState(1); // Step state to control form flow
 
     const [petId, setPetId] = useState("");
@@ -279,11 +287,21 @@ const CreateEvent = () => {
         }
     };
 
+     // Function to log out and redirect to /login
+     const handleLogout = () => {
+        // Clear any authentication tokens or session data if needed
+        localStorage.removeItem("credentials"); // Remove stored credentials
+    dispatch(logout()); // Dispatch logout action
+        navigate("/login"); // Redirect to login page
+    };
+
     return (
         <div className="create-event-container">
             <Link to="/">
                 <Header />
             </Link>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
+
             <h2>Creá el perfil de tu mascota</h2>
 
             {/* Separate Form for File Upload */}

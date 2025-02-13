@@ -1,11 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import "./assets/styles/Home.css"; // Importando el archivo CSS externo
 import petConnectLogo from "./assets/images/petConnectLogoNoBG.png";
 import step1 from "./assets/images/step1_form.png";
 import step2 from "./assets/images/step2_qr_gen.png";
 
 const Home = () => {
+  const navigate = useNavigate(); // Hook for navigation
+
+
   return (
     <div className="home-container">
       {/* Sección Principal */}
@@ -15,9 +18,12 @@ const Home = () => {
           <p>
             Creá fácilmente un código QR para la chapita de tu mascota y asegurate de que siempre puedan encontrarla.
           </p>
-          <Link to="/admin/create" className="cta-button">
+          {/* <Link to="/login" className="cta-button">
             Empezar Ahora
-          </Link>
+          </Link> */}
+            <button className="cta-button" onClick={() => navigate("/login")}>
+            Empezar Ahora
+          </button>
         </div>
         <div className="hero-image">
           <img src={petConnectLogo} alt="Código QR para Mascotas" />
@@ -60,10 +66,9 @@ const Home = () => {
       {/* Llamado a la Acción */}
       <section className="cta-section">
         <h2>Protegé a Tu Mascota Hoy</h2>
-        <Link to="/admin/create" className="cta-button">
+        <button className="cta-button" onClick={() => navigate("/login")}>
           Crear Código QR
-        </Link>
-      </section>
+        </button>      </section>
 
       {/* Footer */}
       <footer className="footer">
