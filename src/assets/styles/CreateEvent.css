@@ -17,13 +17,14 @@ position: relative;
   font-size: 24px;
   margin-bottom: 20px;
 
-  color: #dcc8b4 ;
-  border-bottom: 3px solid #dcc8b4;
+  color: #25D366;
+  border-bottom: 3px solid #25D366;
+  
 }
 
 .create-event-container label {
   margin-top: 10px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -57,12 +58,12 @@ color: #777;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  background: linear-gradient(135deg, #dcc8b4, #b89d89);
+  background: linear-gradient(135deg, #25D366, #128C7E);
 
 }
 
 .create-event-container button:hover {
-  background: linear-gradient(135deg, #b89d89, #dcc8b4);
+  background: linear-gradient(135deg, #128C7E, #25D366);
   transform: scale(1.02); /* Slight zoom effect */
 }
 .create-event-container button:disabled {
@@ -146,7 +147,7 @@ form .error-message {
   border: none;
   border-radius: 6px;
   transition: background-color 0.3s, color 0.3s;
-  background: linear-gradient(135deg, #dcc8b4, #b89d89);
+  background: linear-gradient(135deg, #25D366, #128C7E);
   color: #fff;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
@@ -297,5 +298,22 @@ table th, table td {
 }
 
 .logout-button:hover {
+  background-color: #c0392b;
+}
+
+.reset-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reset-button:hover {
   background-color: #c0392b;
 }

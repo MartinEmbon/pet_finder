@@ -30,7 +30,7 @@ const CreateEvent = () => {
     const [petCharacter, setPetCharacter] = useState(""); // caracter
     const [microChip, setMicrochip] = useState(""); // microchip
     const [microChipNumber, setMicrochipNumber] = useState(""); // microchip
- const [sterilized, setSterilized]= useState("")
+
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
     const [ownerName, setOwnerName] = useState("");
@@ -157,18 +157,18 @@ const CreateEvent = () => {
         setSuccessMessage("");
 
         // Check if the entered secret is correct
-        // if (secret !== SECRET_KEY) {
-        //     setErrorMessage("Invalid secret key.");
-        //     setIsCreating(false);
-        //     return;
-        // }
+        if (secret !== SECRET_KEY) {
+            setErrorMessage("Invalid secret key.");
+            setIsCreating(false);
+            return;
+        }
         // Function to download the QR code as an image
 
         try {
             // Create JSON payload
             const payload = {
                 petId,
-                uploadedImageUrl,
+                coverImageUrl,
                 customMessage,
                 petName,
                 petType,
@@ -177,7 +177,6 @@ const CreateEvent = () => {
                 dateBirth,
                 microChip,
                 microChipNumber,
-                sterilized,
                 description,
                 location,
                 ownerName,
@@ -214,7 +213,6 @@ const CreateEvent = () => {
                 setPetName("");
                 setPetType("");
                 setPetCharacter("")
-                setSterilized("")
                 setPetBreed("")
                 setDateBirth("");
                 setMicrochip("")
@@ -278,7 +276,7 @@ const CreateEvent = () => {
 
                 // Step 3: Update the UI with the public URL
                 setUploadedImageUrl(publicUrl);
-                // setSuccessMessageFileUpload("La imagen se subió correctamente.");
+                setSuccessMessageFileUpload("La imagen se subió correctamente.");
                 setCoverImageFile(null);
             } else {
                 throw new Error("Failed to upload image to Cloud Storage");
@@ -297,48 +295,19 @@ const CreateEvent = () => {
         navigate("/login"); // Redirect to login page
     };
 
-    const handleReset = () => {
-        // Clear all the states related to the form fields
-        setCoverImageFile(null);
-        setCoverImageUrl("");
-        setUploadedImageUrl("");
-        setSuccessMessageFileUpload("");
-        setErrorMessageFileUpload("");
-        setPetId("");
-     
-        setSterilized("")
-        setCoverImageUrl("");
-        setCoverImageFile(null);
-        setCustomMessage("");
-        setPetName("");
-        setPetType("");
-        setPetCharacter("")
-        setPetBreed("")
-        setDateBirth("");
-        setMicrochip("")
-        setMicrochipNumber("")
-        setSecret(""); // Clear secret input
-        setDescription("")
-        setLocation("")
-        setOwnerName("")
-        setContactPhone("")
-      };
-
-
     return (
         <div className="create-event-container">
            
                 <Header />
      
             <button onClick={handleLogout} className="logout-button">Logout</button>
-    <button className="reset-button" onClick={handleReset}>Limpiar</button>
 
             <h2>Creá el perfil de tu mascota</h2>
 
             {/* Separate Form for File Upload */}
             {/* <h2>Subir Imagen de Portada</h2> */}
             <form onSubmit={handleFileUpload}>
-                <label>Elegí la foto de tu mascota y presioná 'Subir imagen'.</label>
+                <label>Seleccionar archivo:</label>
                 <input
                     type="file"
                     onChange={(e) => setCoverImageFile(e.target.files[0])}
@@ -356,7 +325,7 @@ const CreateEvent = () => {
                 )}
 
                 {/* Display the uploaded image URL for the user to copy */}
-                {/* {uploadedImageUrl && (
+                {uploadedImageUrl && (
                     <div>
                         <p>La URL de la imagen cargada:</p>
                         <input
@@ -373,7 +342,7 @@ const CreateEvent = () => {
                             Copiar URL
                         </button>
                     </div>
-                )} */}
+                )}
             </form>
 
             <hr />
@@ -387,41 +356,23 @@ const CreateEvent = () => {
                     placeholder="ID de tu mascota"
                     required
                 />
-
-<label>Nombre de tu mascota:</label>
-                <input
-                    type="text"
-                    value={petName}
-                    onChange={(e) => {
-                        const formattedName = e.target.value
-                            .toLowerCase()
-                            .replace(/\b\w/g, (char) => char.toUpperCase());
-                        setPetName(formattedName);
-                    }}                    placeholder="Nombre de tu mascota"
-                    required
-                />
  <label>Tipo de mascota:</label> {/* New input field */}
                 <input
                     type="text"
                     value={petType}
-                    onChange={(e) => {
-                        const formattedType = e.target.value
-                            .toLowerCase()
-                            .replace(/\b\w/g, (char) => char.toUpperCase());
-                        setPetType(formattedType);
-                    }}                    placeholder="Perro, gato, etc."
+                    onChange={(e) => setPetType(e.target.value)}
+                    placeholder="Tipo de mascota"
                     required
                 />
-            
-
-<label className="after-race">Raza:</label>
+                <label>Nombre de tu mascota:</label>
                 <input
                     type="text"
-                    value={petBreed}
-                    onChange={(e) => setPetBreed(e.target.value)}
-                    placeholder="Bulldog Francés, Labrador, Maine Coon"
+                    value={petName}
+                    onChange={(e) => setPetName(e.target.value)}
+                    placeholder="Nombre de tu mascota"
                     required
                 />
+
 {/* <label>Género:</label>
                 <input
                     type="text"
@@ -430,9 +381,8 @@ const CreateEvent = () => {
                     placeholder="Nombre de tu mascota"
                     required
                 /> */}
-                
 <label>Género:</label>
-<div className="gender-radio-group inline">
+<div className="gender-radio-group">
     <label>
         <input
             type="radio"
@@ -454,8 +404,26 @@ const CreateEvent = () => {
 </div>
 
 
+<label className="after-race">Raza:</label>
+                <input
+                    type="text"
+                    value={petBreed}
+                    onChange={(e) => setPetBreed(e.target.value)}
+                    placeholder="Raza de tu mascota"
+                    required
+                />
 
-<label>Fecha de nacimiento de tu mascota:</label>{dateBirth && (
+<label>Carácter:</label>
+                <input
+                    type="text"
+                    value={petCharacter}
+                    onChange={(e) => setPetCharacter(e.target.value)}
+                    placeholder="Carácter de tu mascota"
+                    required
+                />
+
+
+                <label>Fecha de nacimiento de tu mascota:</label>{dateBirth && (
           <span style={{ marginLeft: "10px", fontSize: "14px", fontWeight: "bold" }}>
             {`Edad: ${calculateAge(dateBirth)} años`}
           </span>
@@ -471,57 +439,16 @@ const CreateEvent = () => {
                 />
 
 
-<label>Castrado:</label>
-<div className="gender-radio-group inline">
-    <label>
-        <input
-            type="radio"
-            value="Yes"
-            checked={sterilized === "Yes"}
-            onChange={(e) => setSterilized(e.target.value)}
-        />
-        Si
-    </label>
-    <label>
-        <input
-            type="radio"
-            value="No"
-            checked={sterilized === "No"}
-            onChange={(e) => setSterilized(e.target.value)}
-        />
-        No
-    </label>
-</div>
-<label>Carácter:</label>
-                <input
-                    type="text"
-                    value={petCharacter}
-                    onChange={(e) => setPetCharacter(e.target.value)}
-                    placeholder="Juguetón, cariñoso, tranquilo"
-                    required
-                />
-
-
-<label>Describí tu mascota:</label>
-                <input
-                    type="text"
-                    value={customMessage}
-                    onChange={(e) => setCustomMessage(e.target.value)}
-                    placeholder="Apariencia, comportamiento, personalidad"
-                />
-
                
 
-                {/* <label>Descripción de tu mascota:</label> 
+                <label>Descripción de tu mascota:</label> {/* New input field */}
                 <input
                     type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Descripción de tu mascota"
                     required
-                /> */}
-
-
+                />
 <label>Microchip:</label>
 <div className="gender-radio-group">
     <label>
@@ -558,18 +485,21 @@ const CreateEvent = () => {
 )}
 
 
-           
+                <label>Dirección</label> {/* New input field */}
+                <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Dirección"
+                    required
+                />
 
                 <label>Nombre de contacto</label> {/* New input field */}
                 <input
                     type="text"
                     value={ownerName}
-                    onChange={(e) => {
-                        const formattedName = e.target.value
-                            .toLowerCase()
-                            .replace(/\b\w/g, (char) => char.toUpperCase()); 
-                        setOwnerName(formattedName);
-                    }}                    placeholder="Nombre de contacto"
+                    onChange={(e) => setOwnerName(e.target.value)}
+                    placeholder="Nombre de contacto"
                     required
                 />
 
@@ -582,33 +512,31 @@ const CreateEvent = () => {
                     required
                 />
 
-                {/* <label>URL para imagen de portada:</label>
+                <label>URL para imagen de portada:</label>
                 <input
                     type="text"
-                    // value={coverImageUrl}
-                    value={uploadedImageUrl}
-                    // onChange={(e) => setCoverImageUrl(e.target.value)}
+                    value={coverImageUrl}
+                    onChange={(e) => setCoverImageUrl(e.target.value)}
                     placeholder="URL de la imagen de portada"
-                    required
-                /> */}
-
-<label>Dirección</label> {/* New input field */}
-                <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Dirección"
                     required
                 />
 
-                {/* <label>Token de autorización:</label>
+                <label>Mensaje personalizado:</label>
+                <input
+                    type="text"
+                    value={customMessage}
+                    onChange={(e) => setCustomMessage(e.target.value)}
+                    placeholder="Mensaje personalizado"
+                />
+
+                <label>Token de autorización:</label>
                 <input
                     type="text"
                     value={secret}
                     onChange={(e) => setSecret(e.target.value)}
                     placeholder="Secret Key"
                     required
-                /> */}
+                />
                 <button type="submit" disabled={isCreating}>
                     {isCreating ? "Creando..." : "Crear Mascota"}
                 </button>
@@ -622,7 +550,7 @@ const CreateEvent = () => {
                 {eventUrl && (
                     <div className="event-url">
                         <p>
-                            Tu mascota se creó con éxito. Accedé a la página de perfil en el
+                            La mascota ha sido creado exitosamente. Accedé a la página de perfil en el
                             siguiente enlace:
                         </p>
                         <a href={eventUrl} target="_blank" rel="noopener noreferrer">
@@ -645,7 +573,7 @@ const CreateEvent = () => {
                         </div>
 
 
-                        {/* <div>
+                        <div>
                             <label>Subir código QR:</label>
                             <input
                                 type="file"
@@ -685,7 +613,7 @@ const CreateEvent = () => {
                                     </button>
                                 </div>
                             )}
-                        </div> */}
+                        </div>
                     </div>
                 )}
             </form>
@@ -694,8 +622,8 @@ const CreateEvent = () => {
                 <p>
                     Si experimentás algún inconveniente durante la creación del perfil de tu mascota,
                     escribinos a{" "}
-                    <a href="mailto:contacto@pet-connect.com">
-                    contacto@pet-connect.com
+                    <a href="mailto:contacto@pet-connect">
+                    contacto@pet-connect
                     </a>
                     .
                 </p>

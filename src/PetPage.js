@@ -74,6 +74,7 @@ function Pet() {
         coverImageUrl,
         customMessage,
         petName,
+        sterilized,
         petType,
         description,
         location,
@@ -92,6 +93,7 @@ function Pet() {
       setPetInfo({
         coverImageUrl,
         customMessage,
+        sterilized,
         petName,
         petType,
         description,
@@ -235,7 +237,7 @@ function Pet() {
              <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
              <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
              <p className="pet-type"><strong>Carácter:</strong> {petInfo.petCharacter}</p>
-             <p className="pet-type"><strong>Esterilización:</strong> {petInfo.microChip}</p>
+             <p className="pet-type"><strong>Esterilización:</strong> {petInfo.sterilized}</p>
             <p><strong>Microchip:</strong> {petInfo?.microChip}</p>
             {petInfo?.microChip?.toLowerCase() === "yes" && petInfo?.microChipNumber && (
               <p><strong>Microchip #:</strong> {petInfo.microChipNumber}</p>

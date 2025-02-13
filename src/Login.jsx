@@ -1,53 +1,87 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "./slices/authSlice"; // Import the login action
+import { login } from "./slices/authSlice";
 import "./assets/styles/Login.css";
 import petConnectLogo from "./assets/images/petConnectLogoNoBG.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [forgotPassword, setForgotPassword] = useState(false); // State for forgot password
-  const [resetEmail, setResetEmail] = useState(""); // State for reset email
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const mockUser = {
-    email: "admin@example.com",
-    password: "password123",
-  };
-
-  // Check if the user is already logged in by checking localStorage
   useEffect(() => {
     const savedCredentials = localStorage.getItem("credentials");
     if (savedCredentials) {
       const { email, password } = JSON.parse(savedCredentials);
       setEmail(email);
       setPassword(password);
-      dispatch(login()); // Dispatch login if credentials are found
-      navigate("/admin/create"); // Redirect to dashboard
+      dispatch(login());
+      navigate("/admin/create");
     }
   }, [dispatch, navigate]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    if (email === mockUser.email && password === mockUser.password) {
-      const credentials = { email, password };
-      localStorage.setItem("credentials", JSON.stringify(credentials)); // Save credentials in localStorage
-      dispatch(login()); // Dispatch login action
-      navigate("/admin/create"); // Redirect after successful login
-    } else {
-      alert("Invalid credentials. Try again.");
+    try {
+      const response = await fetch(
+        "https://us-central1-baby-gift-project.cloudfunctions.net/login-pet",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Invalid credentials. Try again.");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("credentials", JSON.stringify({ email, password }));
+      dispatch(login());
+      navigate("/admin/create");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleForgotPassword = (e) => {
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
-    alert(`Next step: Reset link sent to ${resetEmail}`);
-    // Here you could implement API call to send a reset link
-    setForgotPassword(false); // Hide forgot password form after submission
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(
+        "https://us-central1-baby-gift-project.cloudfunctions.net/reset-pet",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: resetEmail }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send reset email. Try again.");
+      }
+
+      alert(`Reset link sent to ${resetEmail}`);
+      setForgotPassword(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,8 +93,9 @@ const Login = () => {
       <form onSubmit={forgotPassword ? handleForgotPassword : handleLogin} className="login-form">
         <h2>{forgotPassword ? "Forgot Password" : "Login"}</h2>
 
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
         {forgotPassword ? (
-          // Forgot Password Form
           <div>
             <label>Enter your email to reset password:</label>
             <input
@@ -69,11 +104,14 @@ const Login = () => {
               onChange={(e) => setResetEmail(e.target.value)}
               required
             />
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => setForgotPassword(false)}>Back to Login</button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Sending..." : "Submit"}
+            </button>
+            <button type="button" onClick={() => setForgotPassword(false)}>
+              Back to Login
+            </button>
           </div>
         ) : (
-          // Login Form
           <>
             <div>
               <label>Email:</label>
@@ -93,7 +131,9 @@ const Login = () => {
                 required
               />
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
             <button type="button" onClick={() => setForgotPassword(true)}>
               Forgot My Password
             </button>
