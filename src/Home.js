@@ -14,15 +14,15 @@ const Home = () => {
       {/* Sección Principal */}
       <section className="hero">
         <div className="hero-content">
-          <h1>Conectá Mascotas Perdidas con sus Familias</h1>
+          <h1>Conectá mascotas perdidas con sus familias</h1>
           <p>
-            Creá fácilmente un código QR para la chapita de tu mascota y asegurate de que siempre puedan encontrarla.
+            Creá fácilmente un código QR para el collar de tu mascota y asegurate de que siempre puedan encontrarla.
           </p>
           {/* <Link to="/login" className="cta-button">
             Empezar Ahora
           </Link> */}
             <button className="cta-button" onClick={() => navigate("/login")}>
-            Empezar Ahora
+            Área Socios
           </button>
         </div>
         <div className="hero-image">
@@ -54,11 +54,10 @@ const Home = () => {
 
       {/* Sección Beneficios */}
       <section className="benefits">
-        <h2>¿Por Qué Usar Nuestro Servicio?</h2>
+        <h2>¿Por qué usar PetConnect?</h2>
         <ul>
           <li>Contacto instantáneo con quien encuentre a tu mascota</li>
           <li>Perfil personalizado para tu mascota</li>
-          <li>Seguro y confiable</li>
           <li>No necesitás descargar ninguna app</li>
         </ul>
       </section>
@@ -72,8 +71,9 @@ const Home = () => {
 
       {/* Footer */}
       <footer className="footer">
-        <p>© 2024 PetConnect. Todos los derechos reservados.</p>
-        <p>Contacto: <a href="mailto:info@petconnect.com">info@petconnect.com</a></p>
+        <p>© 2025 PetConnect. Todos los derechos reservados.</p>
+        <p>Contacto empresas: <a href="mailto:info@petconnect.com">info@petconnect.com </a></p>
+        <p>Teléfono:+54 3795 003578</p>
       </footer>
 
       

@@ -150,27 +150,38 @@ const CreateEvent = () => {
         setStep(step - 1);
     };
 
+
+
     const handleCreateEvent = async (event) => {
         event.preventDefault();
+
+ // When submitting, apply the formatting to the pet name.
+ const formattedName = petName
+ .trim()  // Remove leading/trailing spaces
+ .replace(/\s+/g, ' ') // Replace multiple spaces with one space
+ .toLowerCase()
+ .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
+
+// Generate the petId (all lowercase, concatenating formatted name and timestamp)
+const timestamp = Date.now(); // Unique timestamp
+const generatedId = `${formattedName.replace(/\s+/g, '').toLowerCase()}-${timestamp}`;
+setPetId(generatedId);
+
+// Now submit the data (you can call your API or whatever you need here)
+console.log('Submitting:', formattedName, generatedId);
+// Add your submit logic here...
         setIsCreating(true);
         setErrorMessage("");
         setSuccessMessage("");
 
-        // Check if the entered secret is correct
-        // if (secret !== SECRET_KEY) {
-        //     setErrorMessage("Invalid secret key.");
-        //     setIsCreating(false);
-        //     return;
-        // }
-        // Function to download the QR code as an image
 
         try {
             // Create JSON payload
             const payload = {
-                petId,
+                petId: generatedId,
                 uploadedImageUrl,
                 customMessage,
-                petName,
+                petName: formattedName,
                 petType,
                 petBreed,
                 petCharacter,
@@ -203,7 +214,7 @@ const CreateEvent = () => {
                 setSuccessMessage("¡La mascota se ha creado con éxito!");
 
                 // Generate and set the event URL
-                const generatedUrl = `https://pet-finder-navy.vercel.app/pet?petId=${petId}`;
+                const generatedUrl = `https://pet-finder-navy.vercel.app/pet?petId=${generatedId}`;
                 setEventUrl(generatedUrl);
 
                 // Clear inputs
@@ -243,7 +254,7 @@ const CreateEvent = () => {
 
         if (!coverImageFile) {
             setErrorMessageFileUpload("Por favor, selecciona un archivo para subir.");
-            return;
+            return null;
         }
 
         try {
@@ -280,6 +291,12 @@ const CreateEvent = () => {
                 setUploadedImageUrl(publicUrl);
                 // setSuccessMessageFileUpload("La imagen se subió correctamente.");
                 setCoverImageFile(null);
+                // setSuccessMessageFileUpload("La imagen se subió correctamente.");
+ // Change the button text using the className
+ const uploadButton = document.querySelector(".uploadButton");
+ if (uploadButton) {
+     uploadButton.textContent = "Imagen subida con éxito";
+ }
             } else {
                 throw new Error("Failed to upload image to Cloud Storage");
             }
@@ -325,6 +342,12 @@ const CreateEvent = () => {
       };
 
 
+      const handlePetNameChange = (e) => {
+        setPetName(e.target.value);
+
+    };
+
+
     return (
         <div className="create-event-container">
            
@@ -345,7 +368,7 @@ const CreateEvent = () => {
                     required
                     className="uploadFile"
                 />
-                <button type="submit">Subir Imagen</button>
+                <button className="uploadButton" type="submit">Subir Imagen</button>
                 {successMessageFileUpload && (
                     <p className="success-message">{successMessageFileUpload}</p>
                 )}
@@ -379,17 +402,17 @@ const CreateEvent = () => {
             <hr />
 
             <form onSubmit={handleCreateEvent}>
-                <label>Ingresá el ID de tu mascota:</label>
+                {/* <label>Ingresá el ID de tu mascota:</label>
                 <input
                     type="text"
                     value={petId}
                     onChange={(e) => setPetId(e.target.value)}
                     placeholder="ID de tu mascota"
                     required
-                />
+                /> */}
 
 <label>Nombre de tu mascota:</label>
-                <input
+                {/* <input
                     type="text"
                     value={petName}
                     onChange={(e) => {
@@ -400,6 +423,15 @@ const CreateEvent = () => {
                     }}                    placeholder="Nombre de tu mascota"
                     required
                 />
+                 */}
+
+<input
+    type="text"
+    value={petName}
+    onChange={handlePetNameChange}
+    placeholder="Nombre de tu mascota"
+    required
+/>
  <label>Tipo de mascota:</label> {/* New input field */}
                 <input
                     type="text"

@@ -42,7 +42,7 @@ const Login = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Invalid credentials. Try again.");
+        throw new Error("Credenciales inválidas. Intentá de nuevo.");
       }
 
       const data = await response.json();
@@ -72,10 +72,10 @@ const Login = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to send reset email. Try again.");
+        throw new Error("Error al enviar el correo de restablecimiento. Intentá de nuevo.");
       }
 
-      alert(`Reset link sent to ${resetEmail}`);
+      alert(`Correo enviado a ${resetEmail}`);
       setForgotPassword(false);
     } catch (err) {
       setError(err.message);
@@ -91,13 +91,13 @@ const Login = () => {
       </div>
 
       <form onSubmit={forgotPassword ? handleForgotPassword : handleLogin} className="login-form">
-        <h2>{forgotPassword ? "Forgot Password" : "Login"}</h2>
+        <h2>{forgotPassword ? "Recuperar contraseña" : "Iniciar sesión"}</h2>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {forgotPassword ? (
           <div>
-            <label>Enter your email to reset password:</label>
+            <label>Ingresá tu email para restablecer la contraseña:</label>
             <input
               type="email"
               value={resetEmail}
@@ -105,10 +105,10 @@ const Login = () => {
               required
             />
             <button type="submit" disabled={loading}>
-              {loading ? "Sending..." : "Submit"}
+              {loading ? "Enviando..." : "Enviado"}
             </button>
             <button type="button" onClick={() => setForgotPassword(false)}>
-              Back to Login
+            Volver al inicio de sesión
             </button>
           </div>
         ) : (
@@ -123,7 +123,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label>Password:</label>
+              <label>Contraseña:</label>
               <input
                 type="password"
                 value={password}
@@ -132,10 +132,10 @@ const Login = () => {
               />
             </div>
             <button type="submit" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Iniciando sesión..." : "Iniciar sesión"}
             </button>
             <button type="button" onClick={() => setForgotPassword(true)}>
-              Forgot My Password
+              Recuperar contraseña
             </button>
           </>
         )}

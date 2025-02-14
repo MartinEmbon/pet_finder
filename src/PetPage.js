@@ -165,7 +165,7 @@ function Pet() {
               <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
               <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
             
-              <p><strong>Cómo me describen:</strong> {petInfo.description}</p>
+              <p><strong>Cómo me describen:</strong> {petInfo.petCharacter}</p>
               <p><strong>¿Dónde vivo?:</strong> {petInfo.location}    <a 
           href={`https://www.google.com/maps?q=${encodeURIComponent(petInfo.location)}`} 
           target="_blank" 

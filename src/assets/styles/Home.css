@@ -61,8 +61,9 @@
   }
   
   .step img {
-    width: 100px;
+    width: 150px;
     margin-bottom: 10px;
+    border-radius: 10px;
   }
   
   .step h3 {
@@ -119,6 +120,7 @@
     border-radius: 5px;
     display: inline-block;
     transition: background 0.3s;
+    cursor:pointer;
   }
   
   .cta-button:hover {
@@ -128,7 +130,7 @@
   /* 🔹 RESPONSIVE DESIGN (Mobile Optimization) */
   @media (max-width: 768px) {
     .hero {
-      flex-direction: column;
+      flex-direction: column-reverse; /* Ensures the image is on top */
       text-align: center;
       padding: 40px 20px;
     }

@@ -80,7 +80,7 @@ color: #777;
 }
 
 .create-event-container .success-message {
-  color: green;
+  color: #25D366;
   font-weight: bold;
   text-align: center;
 }
@@ -157,7 +157,7 @@ form .error-message {
 
 /* Hover effect for the link */
 .event-url a:hover {
-  background: linear-gradient(135deg, #b89d89, #dcc8b4);
+  background: linear-gradient(135deg, #128C7E, #25D366);
   transform: scale(1.02); /* Slight zoom effect */
 }
 
