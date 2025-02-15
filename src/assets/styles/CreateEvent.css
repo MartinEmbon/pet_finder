@@ -314,6 +314,27 @@ table th, table td {
   font-size: 14px;
 }
 
+.list-pets-button{
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  /* left: 50%;
+  transform: translateX(-50%);  */
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .reset-button:hover {
   background-color: #c0392b;
+}
+
+label:has(+ input[required])::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
 }

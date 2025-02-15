@@ -7,6 +7,8 @@ import PetNotFound from "./PetNotFound";
 import Home from "./Home";
 import Login from "./Login"; 
 import ProtectedRoute from "./ProtectedRoute"; // Import protected route
+import ListPets from "./ListPets"; // Import the new ListPets page
+
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -21,6 +23,10 @@ function App() {
         <Route
           path="/admin/create"
           element={isAuthenticated ? <CreateEvent /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/list-pets"
+          element={isAuthenticated ? <ListPets /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

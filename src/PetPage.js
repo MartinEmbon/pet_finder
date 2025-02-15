@@ -84,7 +84,10 @@ function Pet() {
         petCharacter,
         microChip,
         microChipNumber,
-        dateBirth
+        dateBirth,
+        petColor,
+        vetName,
+        vetPhone
         
       } = response.data;
 
@@ -104,7 +107,10 @@ function Pet() {
         petCharacter,
         microChip,
         microChipNumber,
-        dateBirth
+        dateBirth,
+        petColor,
+        vetName,
+        vetPhone
       });
       console.log(response.data);
       setLoading(false);
@@ -152,50 +158,54 @@ function Pet() {
         <div className="info">
         <img src={petInfo.coverImageUrl} alt={petInfo.petName} />
 <div>
-          <h1>¡Hola! soy {petInfo.petName}</h1>
-          <h3 className="subtitle">Tengo {calculateAge(petInfo.dateBirth)}</h3>
+         
           </div>
           {/* ✅ Toggle Between Pet Details & Owner Info */}
           {!showOwnerInfo ? (
             <>
+              <div className="pet-info">
+              <h1>¡Hola! soy {petInfo.petName}</h1>
+              <h3 className="subtitle">Tengo {calculateAge(petInfo.dateBirth)}</h3>
+              </div>
                <div className="contact-card info">
                <p> {petInfo.customMessage}</p>
 
               </div>
               <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
               <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
-            
-              <p><strong>Cómo me describen:</strong> {petInfo.petCharacter}</p>
-              <p><strong>¿Dónde vivo?:</strong> {petInfo.location}    <a 
+              <p className="pet-type"><strong>Mascota:</strong> {petInfo.petCharacter}</p>
+             
+              {/* <p><strong>¿Dónde vivo?:</strong> {petInfo.location}    <a 
           href={`https://www.google.com/maps?q=${encodeURIComponent(petInfo.location)}`} 
           target="_blank" 
           rel="noopener noreferrer"
           className="maps-link"
         >
           <i className="fas fa-map-marker-alt"></i>
-        </a></p> 
+        </a></p>  */}
 
            
             {/* Google Maps Link with FontAwesome Icon */}
      
               <button className="next-button" onClick={() => setShowOwnerInfo(true)}>
-                Ver Información del Dueño →
+                Ver mi perfil completo →
               </button>
             </>
           ) : (
             <>
             
               {/* Microchip Section */}
+              {/* <div className="contact-card info"> */}
 
-      <div className="contact-card info">
-      <h3>Si me ves, ¡avisale a mis papás!</h3>
+      <div className="info">
+      <h1 style={{marginBottom:"10px"}}>Si me ves, ¡avisale a mis papás!</h1>
         {/* Owner Info Section */}
         <div className="collapsible-section">
         <div 
           className="section-header subcategory" 
           onClick={() => setIsOwnerInfoVisible(!isOwnerInfoVisible)}
         >
-          <strong>Contacto</strong>
+          <strong>Contacto de mis dueños</strong>
           <span className={`arrow ${isOwnerInfoVisible ? 'up' : 'down'}`}>&#x2191;</span>
         </div>
         {isOwnerInfoVisible && (
@@ -214,6 +224,17 @@ function Pet() {
                 </a>
               </span>
             </p>
+            <p><strong>¿Dónde vivo?:</strong> {petInfo.location}    <a 
+          href={`https://www.google.com/maps?q=${encodeURIComponent(petInfo.location)}`} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="maps-link"
+        >
+          <i className="fas fa-map-marker-alt"></i>
+        </a></p> 
+
+
+
           </div>
         )}
       </div>
@@ -224,7 +245,7 @@ function Pet() {
        
           onClick={() => setIsGeneralInfoVisible(!isGeneralInfoVisible)}
         >
-          <strong>Info adicional</strong>
+          <strong>Sobre mi</strong>
             <span
       className={`arrow ${isGeneralInfoVisible ? "up" : "down"}`}
       style={{ color: "inherit" }}  // Ensure arrow color follows the inherited color
@@ -236,6 +257,7 @@ function Pet() {
           <div className="section-content">
              <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
              <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
+             <p className="pet-type"><strong>Color:</strong> {petInfo.petColor}</p>
              <p className="pet-type"><strong>Carácter:</strong> {petInfo.petCharacter}</p>
              <p className="pet-type"><strong>Esterilización:</strong> {petInfo.sterilized}</p>
             <p><strong>Microchip:</strong> {petInfo?.microChip}</p>
@@ -248,11 +270,33 @@ function Pet() {
         )}
       </div>
       
+      <div className="collapsible-section">
+        <div 
+          className="section-header" 
+       
+          onClick={() => setIsGeneralInfoVisible(!isGeneralInfoVisible)}
+        >
+          <strong>Mi veterinario</strong>
+            <span
+      className={`arrow ${isGeneralInfoVisible ? "up" : "down"}`}
+      style={{ color: "inherit" }}  // Ensure arrow color follows the inherited color
+    >
+      &#x2191;
+    </span>
+        </div>
+        {isGeneralInfoVisible && (
+          <div className="section-content">
+             <p className="pet-type"><strong>Nombre:</strong> {petInfo.vetName}</p>
+             <p className="pet-type"><strong>Contacto:</strong> {petInfo.vetPhone}</p>
+             
+          </div>
+        )}
+      </div>
     
     </div>
 
               <button className="back-button" onClick={() => setShowOwnerInfo(false)}>
-                ← Volver a Perfil
+                ← Volver
               </button>
             </>
           )}

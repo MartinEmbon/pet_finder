@@ -22,6 +22,8 @@ const CreateEvent = () => {
     const [step, setStep] = useState(1); // Step state to control form flow
 
     const [petId, setPetId] = useState("");
+    const [petColor, setPetColor] = useState("");
+
     const [petType, setPetType] = useState(""); // tipo
     const [petName, setPetName] = useState(""); // nombre
     const [petGender, setPetGender] = useState(""); // género
@@ -30,11 +32,16 @@ const CreateEvent = () => {
     const [petCharacter, setPetCharacter] = useState(""); // caracter
     const [microChip, setMicrochip] = useState(""); // microchip
     const [microChipNumber, setMicrochipNumber] = useState(""); // microchip
- const [sterilized, setSterilized]= useState("")
+    const [sterilized, setSterilized] = useState("")
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
     const [ownerName, setOwnerName] = useState("");
     const [contactPhone, setContactPhone] = useState("");
+
+    const [vetName, setVetName] = useState("");
+    const [vetPhone, setVetPhone] = useState("");
+
+
 
     const [coverImageUrl, setCoverImageUrl] = useState("");
     const [coverImageFile, setCoverImageFile] = useState(null); // For file upload
@@ -56,26 +63,27 @@ const CreateEvent = () => {
 
     const [qrCodeFile, setQrCodeFile] = useState(null);
     const [uploadedQRCodeUrl, setUploadedQRCodeUrl] = useState(""); // Added state for uploaded QR code URL
+    const [uploadButtonText, setUploadButtonText] = useState("Subir Imagen");
 
 
     const hiddenCanvasRef = useRef(null); // For the hidden QR code canvas
 
     // Function to calculate the age based on the birth date
-  const calculateAge = (birthDate) => {
-    if (!birthDate) return null;
-    const birthDateObj = new Date(birthDate);
-    const today = new Date();
-    let age = today.getFullYear() - birthDateObj.getFullYear();
-    const month = today.getMonth();
-    if (month < birthDateObj.getMonth() || (month === birthDateObj.getMonth() && today.getDate() < birthDateObj.getDate())) {
-      age--; // Subtract 1 if the birthdate hasn't occurred yet this year
-    }
-    return age;
-  };
+    const calculateAge = (birthDate) => {
+        if (!birthDate) return null;
+        const birthDateObj = new Date(birthDate);
+        const today = new Date();
+        let age = today.getFullYear() - birthDateObj.getFullYear();
+        const month = today.getMonth();
+        if (month < birthDateObj.getMonth() || (month === birthDateObj.getMonth() && today.getDate() < birthDateObj.getDate())) {
+            age--; // Subtract 1 if the birthdate hasn't occurred yet this year
+        }
+        return age;
+    };
 
-  const handleDateChange = (e) => {
-    setDateBirth(e.target.value);
-  };
+    const handleDateChange = (e) => {
+        setDateBirth(e.target.value);
+    };
 
 
 
@@ -154,22 +162,24 @@ const CreateEvent = () => {
 
     const handleCreateEvent = async (event) => {
         event.preventDefault();
+ // Retrieve user email from localStorage
+ const credentials = JSON.parse(localStorage.getItem("credentials"));
+ const userEmail = credentials?.email || ""; // If no email found, default to an empty string
+        // When submitting, apply the formatting to the pet name.
+        const formattedName = petName
+            .trim()  // Remove leading/trailing spaces
+            .replace(/\s+/g, ' ') // Replace multiple spaces with one space
+            .toLowerCase()
+            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
 
- // When submitting, apply the formatting to the pet name.
- const formattedName = petName
- .trim()  // Remove leading/trailing spaces
- .replace(/\s+/g, ' ') // Replace multiple spaces with one space
- .toLowerCase()
- .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
+        // Generate the petId (all lowercase, concatenating formatted name and timestamp)
+        const timestamp = Date.now(); // Unique timestamp
+        const generatedId = `${formattedName.replace(/\s+/g, '').toLowerCase()}-${timestamp}`;
+        setPetId(generatedId);
 
-// Generate the petId (all lowercase, concatenating formatted name and timestamp)
-const timestamp = Date.now(); // Unique timestamp
-const generatedId = `${formattedName.replace(/\s+/g, '').toLowerCase()}-${timestamp}`;
-setPetId(generatedId);
-
-// Now submit the data (you can call your API or whatever you need here)
-console.log('Submitting:', formattedName, generatedId);
-// Add your submit logic here...
+        // Now submit the data (you can call your API or whatever you need here)
+        console.log('Submitting:', formattedName, generatedId);
+        // Add your submit logic here...
         setIsCreating(true);
         setErrorMessage("");
         setSuccessMessage("");
@@ -182,6 +192,7 @@ console.log('Submitting:', formattedName, generatedId);
                 uploadedImageUrl,
                 customMessage,
                 petName: formattedName,
+                petColor,
                 petType,
                 petBreed,
                 petCharacter,
@@ -192,7 +203,11 @@ console.log('Submitting:', formattedName, generatedId);
                 description,
                 location,
                 ownerName,
-                contactPhone
+                contactPhone,
+                vetName,
+                vetPhone,
+                userEmail  // Add the userEmail to the payload
+
             };
 
             // Handle file upload separately if needed
@@ -222,6 +237,7 @@ console.log('Submitting:', formattedName, generatedId);
                 setCoverImageUrl("");
                 setCoverImageFile(null);
                 setCustomMessage("");
+                setPetColor("")
                 setPetName("");
                 setPetType("");
                 setPetCharacter("")
@@ -235,6 +251,8 @@ console.log('Submitting:', formattedName, generatedId);
                 setLocation("")
                 setOwnerName("")
                 setContactPhone("")
+                setVetName("")
+                setVetPhone("")
             } else {
                 setErrorMessage("Hubo un error al crear el evento.");
             }
@@ -258,6 +276,8 @@ console.log('Submitting:', formattedName, generatedId);
         }
 
         try {
+            setUploadButtonText("Subiendo...")
+            
             // Step 1: Get the signed URL from the Cloud Function
             const response = await axios.post(
                 "https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/add-cover-photo-album",
@@ -292,25 +312,29 @@ console.log('Submitting:', formattedName, generatedId);
                 // setSuccessMessageFileUpload("La imagen se subió correctamente.");
                 setCoverImageFile(null);
                 // setSuccessMessageFileUpload("La imagen se subió correctamente.");
- // Change the button text using the className
- const uploadButton = document.querySelector(".uploadButton");
- if (uploadButton) {
-     uploadButton.textContent = "Imagen subida con éxito";
- }
+                // Change the button text using the className
+                setUploadButtonText("Imagen subida");
+
+                // const uploadButton = document.querySelector(".uploadButton");
+                // if (uploadButton) {
+                //     uploadButton.textContent = "Imagen subida con éxito";
+                // }
             } else {
                 throw new Error("Failed to upload image to Cloud Storage");
             }
         } catch (error) {
             console.error("Error uploading file:", error);
             setErrorMessageFileUpload("Error al subir la imagen.");
+            setUploadButtonText("Subir Imagen"); // Reset button text on error
+
         }
     };
 
-     // Function to log out and redirect to /login
-     const handleLogout = () => {
+    // Function to log out and redirect to /login
+    const handleLogout = () => {
         // Clear any authentication tokens or session data if needed
         localStorage.removeItem("credentials"); // Remove stored credentials
-    dispatch(logout()); // Dispatch logout action
+        dispatch(logout()); // Dispatch logout action
         navigate("/login"); // Redirect to login page
     };
 
@@ -322,7 +346,9 @@ console.log('Submitting:', formattedName, generatedId);
         setSuccessMessageFileUpload("");
         setErrorMessageFileUpload("");
         setPetId("");
-     
+        setPetColor("")
+        setVetName("")
+        setVetPhone("")
         setSterilized("")
         setCoverImageUrl("");
         setCoverImageFile(null);
@@ -339,10 +365,10 @@ console.log('Submitting:', formattedName, generatedId);
         setLocation("")
         setOwnerName("")
         setContactPhone("")
-      };
+    };
 
 
-      const handlePetNameChange = (e) => {
+    const handlePetNameChange = (e) => {
         setPetName(e.target.value);
 
     };
@@ -350,12 +376,15 @@ console.log('Submitting:', formattedName, generatedId);
 
     return (
         <div className="create-event-container">
-           
-                <Header />
-     
-            <button onClick={handleLogout} className="logout-button">Logout</button>
-    <button className="reset-button" onClick={handleReset}>Limpiar</button>
 
+            <Header className="header-with-margin" />
+
+            <button onClick={handleLogout} className="logout-button">Salir</button>
+            <button className="reset-button" onClick={handleReset}>Limpiar</button>
+{/* Navigate to List Pets Page */}
+<button className="list-pets-button" onClick={() => navigate("/list-pets")}>
+                Listado
+            </button>
             <h2>Creá el perfil de tu mascota</h2>
 
             {/* Separate Form for File Upload */}
@@ -368,7 +397,7 @@ console.log('Submitting:', formattedName, generatedId);
                     required
                     className="uploadFile"
                 />
-                <button className="uploadButton" type="submit">Subir Imagen</button>
+                <button className="uploadButton" type="submit">{uploadButtonText}</button>
                 {successMessageFileUpload && (
                     <p className="success-message">{successMessageFileUpload}</p>
                 )}
@@ -411,7 +440,7 @@ console.log('Submitting:', formattedName, generatedId);
                     required
                 /> */}
 
-<label>Nombre de tu mascota:</label>
+                <label>Nombre de tu mascota:</label>
                 {/* <input
                     type="text"
                     value={petName}
@@ -425,14 +454,14 @@ console.log('Submitting:', formattedName, generatedId);
                 />
                  */}
 
-<input
-    type="text"
-    value={petName}
-    onChange={handlePetNameChange}
-    placeholder="Nombre de tu mascota"
-    required
-/>
- <label>Tipo de mascota:</label> {/* New input field */}
+                <input
+                    type="text"
+                    value={petName}
+                    onChange={handlePetNameChange}
+                    placeholder="Nombre de tu mascota"
+                    required
+                />
+                <label>Tipo de mascota:</label> {/* New input field */}
                 <input
                     type="text"
                     value={petType}
@@ -441,12 +470,12 @@ console.log('Submitting:', formattedName, generatedId);
                             .toLowerCase()
                             .replace(/\b\w/g, (char) => char.toUpperCase());
                         setPetType(formattedType);
-                    }}                    placeholder="Perro, gato, etc."
+                    }} placeholder="Perro, gato, etc."
                     required
                 />
-            
 
-<label className="after-race">Raza:</label>
+
+                <label className="after-race">Raza:</label>
                 <input
                     type="text"
                     value={petBreed}
@@ -454,7 +483,7 @@ console.log('Submitting:', formattedName, generatedId);
                     placeholder="Bulldog Francés, Labrador, Maine Coon"
                     required
                 />
-{/* <label>Género:</label>
+                {/* <label>Género:</label>
                 <input
                     type="text"
                     value={petGender}
@@ -462,36 +491,39 @@ console.log('Submitting:', formattedName, generatedId);
                     placeholder="Nombre de tu mascota"
                     required
                 /> */}
-                
-<label>Género:</label>
-<div className="gender-radio-group inline">
-    <label>
-        <input
-            type="radio"
-            value="Male"
-            checked={petGender === "Male"}
-            onChange={(e) => setPetGender(e.target.value)}
-        />
-        Macho
-    </label>
-    <label>
-        <input
-            type="radio"
-            value="Female"
-            checked={petGender === "Female"}
-            onChange={(e) => setPetGender(e.target.value)}
-        />
-        Hembra
-    </label>
-</div>
+
+                <label>Género:</label>
+                <div className="gender-radio-group inline">
+                    <label>
+                        <input
+                            type="radio"
+                            value="Male"
+                            checked={petGender === "Male"}
+                            onChange={(e) => setPetGender(e.target.value)}
+                          
+            
+                        />
+                        Macho
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="Female"
+                            checked={petGender === "Female"}
+                            onChange={(e) => setPetGender(e.target.value)}
+                           
+                        />
+                        Hembra
+                    </label>
+                </div>
 
 
 
-<label>Fecha de nacimiento de tu mascota:</label>{dateBirth && (
-          <span style={{ marginLeft: "10px", fontSize: "14px", fontWeight: "bold" }}>
-            {`Edad: ${calculateAge(dateBirth)} años`}
-          </span>
-        )}
+                <label>Fecha de nacimiento de tu mascota:</label>{dateBirth && (
+                    <span style={{ marginLeft: "10px", fontSize: "14px", fontWeight: "bold" }}>
+                        {`Edad: ${calculateAge(dateBirth)} años`}
+                    </span>
+                )}
                 <input
                     type="date"
                     value={dateBirth}
@@ -502,29 +534,36 @@ console.log('Submitting:', formattedName, generatedId);
                     required
                 />
 
-
-<label>Castrado:</label>
-<div className="gender-radio-group inline">
-    <label>
-        <input
-            type="radio"
-            value="Yes"
-            checked={sterilized === "Yes"}
-            onChange={(e) => setSterilized(e.target.value)}
-        />
-        Si
-    </label>
-    <label>
-        <input
-            type="radio"
-            value="No"
-            checked={sterilized === "No"}
-            onChange={(e) => setSterilized(e.target.value)}
-        />
-        No
-    </label>
-</div>
-<label>Carácter:</label>
+                <label className="after-race">Color:</label>
+                <input
+                    type="text"
+                    value={petColor}
+                    onChange={(e) => setPetColor(e.target.value)}
+                    placeholder="Color de tu mascota"
+                    required
+                />
+                <label>Castrado:</label>
+                <div className="gender-radio-group inline">
+                    <label>
+                        <input
+                            type="radio"
+                            value="Si"
+                            checked={sterilized === "Si"}
+                            onChange={(e) => setSterilized(e.target.value)}
+                        />
+                        Si
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="No"
+                            checked={sterilized === "No"}
+                            onChange={(e) => setSterilized(e.target.value)}
+                        />
+                        No
+                    </label>
+                </div>
+                <label>Carácter:</label>
                 <input
                     type="text"
                     value={petCharacter}
@@ -534,7 +573,7 @@ console.log('Submitting:', formattedName, generatedId);
                 />
 
 
-<label>Describí tu mascota:</label>
+                <label>Describí tu mascota:</label>
                 <input
                     type="text"
                     value={customMessage}
@@ -542,7 +581,7 @@ console.log('Submitting:', formattedName, generatedId);
                     placeholder="Apariencia, comportamiento, personalidad"
                 />
 
-               
+
 
                 {/* <label>Descripción de tu mascota:</label> 
                 <input
@@ -554,43 +593,43 @@ console.log('Submitting:', formattedName, generatedId);
                 /> */}
 
 
-<label>Microchip:</label>
-<div className="gender-radio-group">
-    <label>
-        <input
-            type="radio"
-            value="Yes"
-            checked={microChip === "Yes"}
-            onChange={(e) => setMicrochip(e.target.value)}
-        />
-        Si
-    </label>
-    <label>
-        <input
-            type="radio"
-            value="No"
-            checked={microChip === "No"}
-            onChange={(e) => setMicrochip(e.target.value)}
-        />
-        No
-    </label>
-</div>
+                <label>Microchip:</label>
+                <div className="gender-radio-group">
+                    <label>
+                        <input
+                            type="radio"
+                            value="Si"
+                            checked={microChip === "Si"}
+                            onChange={(e) => setMicrochip(e.target.value)}
+                        />
+                        Si
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="No"
+                            checked={microChip === "No"}
+                            onChange={(e) => setMicrochip(e.target.value)}
+                        />
+                        No
+                    </label>
+                </div>
 
-{microChip === "Yes" && (
-    <>
-        <label>Número de microchip</label> {/* New input field */}
-        <input
-            type="text"
-            value={microChipNumber}
-            onChange={(e) => setMicrochipNumber(e.target.value)}
-            placeholder="Número de microchip"
-            required
-        />
-    </>
-)}
+                {microChip === "Si" && (
+                    <>
+                        <label>Número de microchip</label> {/* New input field */}
+                        <input
+                            type="text"
+                            value={microChipNumber}
+                            onChange={(e) => setMicrochipNumber(e.target.value)}
+                            placeholder="Número de microchip"
+                            required
+                        />
+                    </>
+                )}
 
 
-           
+
 
                 <label>Nombre de contacto</label> {/* New input field */}
                 <input
@@ -599,9 +638,9 @@ console.log('Submitting:', formattedName, generatedId);
                     onChange={(e) => {
                         const formattedName = e.target.value
                             .toLowerCase()
-                            .replace(/\b\w/g, (char) => char.toUpperCase()); 
+                            .replace(/\b\w/g, (char) => char.toUpperCase());
                         setOwnerName(formattedName);
-                    }}                    placeholder="Nombre de contacto"
+                    }} placeholder="Nombre de contacto"
                     required
                 />
 
@@ -624,7 +663,7 @@ console.log('Submitting:', formattedName, generatedId);
                     required
                 /> */}
 
-<label>Dirección</label> {/* New input field */}
+                <label>Dirección</label> {/* New input field */}
                 <input
                     type="text"
                     value={location}
@@ -633,6 +672,23 @@ console.log('Submitting:', formattedName, generatedId);
                     required
                 />
 
+                <label>Nombre del veterinario</label> {/* New input field */}
+                <input
+                    type="text"
+                    value={vetName}
+                    onChange={(e) => setVetName(e.target.value)}
+                    placeholder="Nombre del veterinario"
+
+                />
+
+                <label>Teléfono de veterinario</label> {/* New input field */}
+                <input
+                    type="text"
+                    value={vetPhone}
+                    onChange={(e) => setVetPhone(e.target.value)}
+                    placeholder="Teléfono de veterinario"
+
+                />
                 {/* <label>Token de autorización:</label>
                 <input
                     type="text"
@@ -727,7 +783,7 @@ console.log('Submitting:', formattedName, generatedId);
                     Si experimentás algún inconveniente durante la creación del perfil de tu mascota,
                     escribinos a{" "}
                     <a href="mailto:contacto@pet-connect.com">
-                    contacto@pet-connect.com
+                        contacto@pet-connect.com
                     </a>
                     .
                 </p>
