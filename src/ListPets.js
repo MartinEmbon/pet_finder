@@ -12,7 +12,6 @@ const ListPets = () => {
         const fetchPets = async () => {
             const credentials = JSON.parse(localStorage.getItem("credentials"));
             const userEmail = credentials?.email || "";
-
             if (!userEmail) {
                 return;
             }
@@ -29,7 +28,7 @@ const ListPets = () => {
                 }
             } catch (error) {
                 console.error("Error fetching pets:", error);
-                setErrorMessage("Error retrieving pets.");
+                setErrorMessage("No hay mascotas para mostrar.");
             }
         };
 
