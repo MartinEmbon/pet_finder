@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 
@@ -38,10 +38,11 @@ const CreateEvent = () => {
     const [location, setLocation] = useState("");
     const [ownerName, setOwnerName] = useState("");
     const [contactPhone, setContactPhone] = useState("");
-
+    const [vetAddress, setVetAddress]=useState("")
     const [vetName, setVetName] = useState("");
     const [vetPhone, setVetPhone] = useState("");
 
+    const [userEmail, setUserEmail] = useState("");
 
 
     const [coverImageUrl, setCoverImageUrl] = useState("");
@@ -68,6 +69,41 @@ const CreateEvent = () => {
 
 
     const hiddenCanvasRef = useRef(null); // For the hidden QR code canvas
+    const [profileCount, setProfileCount] = useState(0);
+    const [maxProfiles, setMaxProfiles] = useState(5); // Default limit
+
+
+
+    useEffect(() => {
+        // Retrieve user email from localStorage (or session)
+        const credentials = JSON.parse(localStorage.getItem("credentials"));
+        if (credentials?.email) {
+            setUserEmail(credentials.email);
+            fetchUserProfileCount(credentials.email);
+        }
+    }, []);
+
+    // Function to fetch profile count from backend
+    const fetchUserProfileCount = async (email) => {
+        try {
+            const response = await axios.get(`https://us-central1-pet-finder-450419.cloudfunctions.net/getUserProfileCount?email=${email}`);
+            if (response.data) {
+                setProfileCount(response.data.profileCount);
+                setMaxProfiles(response.data.maxProfiles);
+            }
+        } catch (error) {
+            console.error("Error fetching profile count:", error);
+        }
+    };
+
+
+
+
+
+
+
+
+
 
     // Function to calculate the age based on the birth date
     const calculateAge = (birthDate) => {
@@ -163,6 +199,13 @@ const CreateEvent = () => {
 
     const handleCreateEvent = async (event) => {
         event.preventDefault();
+
+        if (profileCount >= maxProfiles) {
+            alert("Has alcanzado el límite de perfiles permitidos.");
+            return;
+        }
+
+
  // Retrieve user email from localStorage
  const credentials = JSON.parse(localStorage.getItem("credentials"));
  const userEmail = credentials?.email || ""; // If no email found, default to an empty string
@@ -212,7 +255,8 @@ const CreateEvent = () => {
                 contactPhone,
                 vetName,
                 vetPhone,
-                userEmail  // Add the userEmail to the payload
+                vetAddress,
+                userEmail
 
             };
 
@@ -233,7 +277,11 @@ const CreateEvent = () => {
 
             if (response.data.success) {
                 setSuccessMessage("¡La mascota se ha creado con éxito!");
+// Update profile count in users collection
+            await axios.put("https://us-central1-pet-finder-450419.cloudfunctions.net/update-profile_count", { email: userEmail });
 
+              // ✅ Fetch updated profile count after update
+    fetchUserProfileCount(userEmail);
                 // Generate and set the event URL
                 const generatedUrl = `https://pet-finder-navy.vercel.app/pet?petId=${generatedId}`;
                 setEventUrl(generatedUrl);
@@ -259,6 +307,7 @@ const CreateEvent = () => {
                 setContactPhone("")
                 setVetName("")
                 setVetPhone("")
+                setVetAddress("")
             } else {
                 setErrorMessage("Hubo un error al crear el evento.");
             }
@@ -371,6 +420,8 @@ const CreateEvent = () => {
         setLocation("")
         setOwnerName("")
         setContactPhone("")
+        setVetAddress("")
+
     };
 
 
@@ -391,9 +442,15 @@ const CreateEvent = () => {
             <button className="reset-button" onClick={handleReset}>Limpiar</button>
 {/* Navigate to List Pets Page */}
 <button className="list-pets-button" onClick={() => navigate("/list-pets")}>
+
                 Listado
             </button>
             <h2>Creá el perfil de tu mascota</h2>
+<div className="profiles-created">
+                <p>Perfiles creados: {profileCount} / {maxProfiles}</p>
+
+</div>
+
 
             {/* Separate Form for File Upload */}
             {/* <h2>Subir Imagen de Portada</h2> */}
@@ -695,6 +752,15 @@ const CreateEvent = () => {
                     value={vetPhone}
                     onChange={(e) => setVetPhone(e.target.value)}
                     placeholder="Teléfono de veterinario"
+
+                />
+
+<label>Dirección de la veterinaria</label> {/* New input field */}
+                <input
+                    type="text"
+                    value={vetAddress}
+                    onChange={(e) => setVetAddress(e.target.value)}
+                    placeholder="Dirección de la veterinaria"
 
                 />
                 {/* <label>Token de autorización:</label>

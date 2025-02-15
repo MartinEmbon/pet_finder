@@ -89,7 +89,8 @@ function Pet() {
         dateBirth,
         petColor,
         vetName,
-        vetPhone
+        vetPhone,
+        vetAddress
         
       } = response.data;
 
@@ -112,7 +113,8 @@ function Pet() {
         dateBirth,
         petColor,
         vetName,
-        vetPhone
+        vetPhone,
+        vetAddress
       });
       console.log(response.data);
       setLoading(false);
@@ -259,6 +261,7 @@ function Pet() {
           <div className="section-content">
              <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
              <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
+             <p className="pet-type"><strong>Edad:</strong> {calculateAge(petInfo.dateBirth)}</p>
              <p className="pet-type"><strong>Color:</strong> {petInfo.petColor}</p>
              <p className="pet-type"><strong>Carácter:</strong> {petInfo.petCharacter}</p>
              <p className="pet-type"><strong>Esterilización:</strong> {petInfo.sterilized}</p>
@@ -289,8 +292,27 @@ function Pet() {
         {isVetInfoVisible && (
           <div className="section-content">
              <p className="pet-type"><strong>Nombre:</strong> {petInfo.vetName}</p>
-             <p className="pet-type"><strong>Contacto:</strong> {petInfo.vetPhone}</p>
-             
+             <p className="pet-type"><strong>Contacto:</strong> 
+             <span className="phone-with-whatsapp">
+                {petInfo.contactPhone}
+                <a 
+                  target="_blank"
+                  href={`https://wa.me/54${petInfo.vetPhone}`}
+                  className="whatsapp-link"
+                  rel="noreferrer"
+                >
+                  <i className="fab fa-whatsapp"></i>
+                </a>
+              </span>
+             </p>
+             <p><strong>Dirección:</strong> {petInfo.vetAddress}    <a 
+          href={`https://www.google.com/maps?q=${encodeURIComponent(petInfo.vetAddress)}`} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="maps-link"
+        >
+          <i className="fas fa-map-marker-alt"></i>
+        </a></p> 
           </div>
         )}
       </div>

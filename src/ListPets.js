@@ -21,7 +21,7 @@ const ListPets = () => {
                 const response = await axios.get("https://us-central1-pet-finder-450419.cloudfunctions.net/list-pets", {
                     params: { email: userEmail }
                 });
-
+                console.log(response.data)
                 if (response.data.length === 0) {
                     setErrorMessage("No pets found for this user.");
                 } else {
@@ -37,16 +37,17 @@ const ListPets = () => {
     }, []);
     return (
         <div className="list-pets-container">
-           
+
             <Header />
 
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-    
+
             <div className="pets-table-container">
                 <h2>Lista de mascotas registradas</h2>
                 <table className="pets-table">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Raza</th>
                             <th>Imagen</th>
@@ -59,20 +60,30 @@ const ListPets = () => {
                     <tbody>
                         {pets.map((pet) => (
                             <tr key={pet.petId}>
+                                <td>
+                                    <a
+                                        className="table-link"
+                                        href={`https://pet-finder-navy.vercel.app/pet?petId=${pet.petId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Ver Perfil
+                                    </a>
+                                </td>
                                 <td>{pet.petName}</td>
                                 <td>{pet.petType}</td>
                                 <td><img src={pet.coverImageUrl} alt={pet.petName} /></td>
                                 <td>{pet.ownerName}</td>
                                 <td>{pet.contactPhone}</td>
                                 <td>{pet.location}</td>
-                             
+
                                 <td>{new Date(pet.dateRegistry).toLocaleDateString()}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-    
+
             <button onClick={() => navigate("/admin/create")} className="back-button-list-pets">
                 Volver
             </button>
