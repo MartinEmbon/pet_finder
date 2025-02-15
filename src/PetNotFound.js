@@ -40,14 +40,14 @@ function PetNotFound() {
   return (
     <div className="album-not-found">
       <Helmet>
-        <title>{content.helmetTitle}</title>
+        <title>Mascota no encontrada</title>
       </Helmet>
       <Link to="/">
         <Header />
       </Link>
-      <h1>{content.title}</h1>
-      <p>{content.content}</p>
-      <button onClick={handleGoBack}>{content.goHome}</button>
+      <h1>¡Ups... Esta mascota no existe!</h1>
+      <p>La mascota que estás buscando no existe o ya no está disponible en el registro</p>
+      <button onClick={handleGoBack}>Ir para Home</button>
     </div>
   );
 }

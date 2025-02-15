@@ -19,6 +19,8 @@ function Pet() {
 
   const [isGeneralInfoVisible, setIsGeneralInfoVisible] = useState(true);
   const [isOwnerInfoVisible, setIsOwnerInfoVisible] = useState(true);
+  const [isVetInfoVisible, setIsVetInfoVisible] = useState(true);
+
 
   const [petInfo, setPetInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -274,17 +276,17 @@ function Pet() {
         <div 
           className="section-header" 
        
-          onClick={() => setIsGeneralInfoVisible(!isGeneralInfoVisible)}
+          onClick={() => setIsVetInfoVisible(!isVetInfoVisible)}
         >
           <strong>Mi veterinario</strong>
             <span
-      className={`arrow ${isGeneralInfoVisible ? "up" : "down"}`}
+      className={`arrow ${isVetInfoVisible ? "up" : "down"}`}
       style={{ color: "inherit" }}  // Ensure arrow color follows the inherited color
     >
       &#x2191;
     </span>
         </div>
-        {isGeneralInfoVisible && (
+        {isVetInfoVisible && (
           <div className="section-content">
              <p className="pet-type"><strong>Nombre:</strong> {petInfo.vetName}</p>
              <p className="pet-type"><strong>Contacto:</strong> {petInfo.vetPhone}</p>

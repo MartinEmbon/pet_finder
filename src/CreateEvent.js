@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { Helmet } from "react-helmet";
 
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
@@ -165,6 +166,11 @@ const CreateEvent = () => {
  // Retrieve user email from localStorage
  const credentials = JSON.parse(localStorage.getItem("credentials"));
  const userEmail = credentials?.email || ""; // If no email found, default to an empty string
+
+ // Add emoji to the customMessage
+ const messageWithEmoji = `${customMessage} 🐾✨`;  // Add an emoji at the end
+
+
         // When submitting, apply the formatting to the pet name.
         const formattedName = petName
             .trim()  // Remove leading/trailing spaces
@@ -190,7 +196,7 @@ const CreateEvent = () => {
             const payload = {
                 petId: generatedId,
                 uploadedImageUrl,
-                customMessage,
+                customMessage:messageWithEmoji,
                 petName: formattedName,
                 petColor,
                 petType,
@@ -376,7 +382,9 @@ const CreateEvent = () => {
 
     return (
         <div className="create-event-container">
-
+<Helmet>
+        <title>Crear mascota</title>
+      </Helmet>
             <Header className="header-with-margin" />
 
             <button onClick={handleLogout} className="logout-button">Salir</button>

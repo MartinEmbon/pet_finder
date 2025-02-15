@@ -82,9 +82,9 @@
     width: 20%;
 }
 
-.back-button:hover {
-    background-color: #388e3c; /* Darker green on hover */
-}
+/* .back-button:hover {
+    background-color: #388e3c; 
+} */
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
@@ -108,8 +108,8 @@
         max-width: 40px; /* Smaller images on mobile */
     }
 
-    .back-button {
-        font-size: 0.9rem; /* Adjust button font size */
+    /* .back-button {
+        font-size: 0.9rem; 
         padding: 8px 16px;
-    }
+    } */
 }

@@ -4,13 +4,16 @@ import "./assets/styles/Home.css"; // Importando el archivo CSS externo
 import petConnectLogo from "./assets/images/petConnectLogoNoBG.png";
 import step1 from "./assets/images/step1_form.png";
 import step2 from "./assets/images/step2_qr_gen.png";
-
+import { Helmet } from "react-helmet";
 const Home = () => {
   const navigate = useNavigate(); // Hook for navigation
 
 
   return (
     <div className="home-container">
+    <Helmet>
+        <title>PetConnect - Página Principal</title>
+      </Helmet>
       {/* Sección Principal */}
       <section className="hero">
         <div className="hero-content">
