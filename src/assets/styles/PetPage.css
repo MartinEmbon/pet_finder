@@ -28,7 +28,7 @@ body {
   
   /* Pet Card Styles */
   .pet-card {
-    width: 85%; /* Percentage width */
+    width: 100%; /* Percentage width */
     max-width: 400px; /* Limiting max width on larger screens */
     background-color: #fff; /* White background for the card */
     border-radius: 12px;
@@ -38,16 +38,18 @@ body {
     transition: all 0.3s ease-in-out;
     border: 2px solid #e6e6e6; /* Light border for separation */
     margin: 0 auto; /* Center horizontally */
-    
+    text-align: center;
   }
   
   /* Pet Image */
   .pet-card img {
-    width: calc(100% -22px); 
+    width: calc(100% - 22px);
     height: auto;
     border-radius: 12px;
     object-fit: cover;
     border: 4px solid #d1e6d1; /* Soft green border for the image */
+    display: block;
+    margin: 0 auto;
   }
   
   /* Title (Pet Name) */
