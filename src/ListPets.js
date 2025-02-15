@@ -22,13 +22,13 @@ const ListPets = () => {
                 });
                 console.log(response.data)
                 if (response.data.length === 0) {
-                    setErrorMessage("No pets found for this user.");
+                    setErrorMessage("No hay mascotas para mostrar.");
                 } else {
                     setPets(response.data);
                 }
             } catch (error) {
                 console.error("Error fetching pets:", error);
-                setErrorMessage("No hay mascotas para mostrar.");
+                setErrorMessage("Error en la consulta. Intente de nuevo más tarde.");
             }
         };
 
