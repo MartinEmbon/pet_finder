@@ -172,7 +172,7 @@ function Pet() {
                 <h3 className="subtitle">Tengo {calculateAge(petInfo.dateBirth)}</h3>
               </div>
 
-
+              
               <div className="contact-card info">
                 <p> {petInfo.customMessage}</p>
 
@@ -181,6 +181,18 @@ function Pet() {
               <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
               <p className="pet-type"><strong>Mascota:</strong> {petInfo.petCharacter}</p>
 
+              {/* <p><strong>¿Dónde vivo?:</strong> {petInfo.location}    <a 
+          href={`https://www.google.com/maps?q=${encodeURIComponent(petInfo.location)}`} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="maps-link"
+        >
+          <i className="fas fa-map-marker-alt"></i>
+        </a></p>  */}
+
+
+              {/* Google Maps Link with FontAwesome Icon */}
+
               <button className="next-button" onClick={() => setShowOwnerInfo(true)}>
                 Ver mi perfil completo →
               </button>
@@ -188,12 +200,11 @@ function Pet() {
           ) : (
             <>
 
-              <div className="info">
-                <h1 style={{ marginBottom: "10px", padding:"0 20px" }}>Si me ves, ¡avisale a mis papás!</h1>
-                {/* <div className="contact-card info">
-                <p> {petInfo.customMessage}</p>
+              {/* Microchip Section */}
+              {/* <div className="contact-card info"> */}
 
-              </div> */}
+              <div className="info">
+                <h1 style={{ marginBottom: "10px" }}>Si me ves, ¡avisale a mis papás!</h1>
                 {/* Owner Info Section */}
                 <div className="collapsible-section">
                   <div
@@ -227,6 +238,9 @@ function Pet() {
                       >
                         <i className="fas fa-map-marker-alt"></i>
                       </a></p>
+
+
+
                     </div>
                   )}
                 </div>

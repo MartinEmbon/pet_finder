@@ -111,7 +111,7 @@ body {
   /* Mobile Responsiveness */
   @media (max-width: 600px) {
     .pet-card {
-      width: 85%; /* Slightly more space on mobile */
+      width: 85%; 
       padding: 15px;
     }
   
