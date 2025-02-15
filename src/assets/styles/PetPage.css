@@ -43,7 +43,7 @@ body {
   
   /* Pet Image */
   .pet-card img {
-    width: 100%; /* Image takes full width */
+    width: calc(100% -22px); 
     height: auto;
     border-radius: 12px;
     object-fit: cover;

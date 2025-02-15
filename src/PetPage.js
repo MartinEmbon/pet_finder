@@ -177,9 +177,9 @@ function Pet() {
                 <p> {petInfo.customMessage}</p>
 
               </div>
-              <p className="pet-type"><strong>Mascota:</strong> {petInfo.petType}</p>
+              <p className="pet-type"><strong>Soy un:</strong> {petInfo.petType}</p>
               <p className="pet-type"><strong>Raza:</strong> {petInfo.petBreed}</p>
-              <p className="pet-type"><strong>Mascota:</strong> {petInfo.petCharacter}</p>
+              <p className="pet-type"><strong>Cómo me describen:</strong> {petInfo.petCharacter}</p>
 
               <button className="next-button" onClick={() => setShowOwnerInfo(true)}>
                 Ver mi perfil completo →

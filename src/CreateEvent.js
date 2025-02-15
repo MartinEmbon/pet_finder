@@ -21,10 +21,8 @@ const CreateEvent = () => {
     const dispatch = useDispatch();
 
     const [step, setStep] = useState(1); // Step state to control form flow
-
     const [petId, setPetId] = useState("");
     const [petColor, setPetColor] = useState("");
-
     const [petType, setPetType] = useState(""); // tipo
     const [petName, setPetName] = useState(""); // nombre
     const [petGender, setPetGender] = useState(""); // género
@@ -38,28 +36,22 @@ const CreateEvent = () => {
     const [location, setLocation] = useState("");
     const [ownerName, setOwnerName] = useState("");
     const [contactPhone, setContactPhone] = useState("");
-    const [vetAddress, setVetAddress]=useState("")
+    const [vetAddress, setVetAddress] = useState("")
     const [vetName, setVetName] = useState("");
     const [vetPhone, setVetPhone] = useState("");
-
     const [userEmail, setUserEmail] = useState("");
-
-
     const [coverImageUrl, setCoverImageUrl] = useState("");
     const [coverImageFile, setCoverImageFile] = useState(null); // For file upload
     const [customMessage, setCustomMessage] = useState("");
-
     const [secret, setSecret] = useState(""); // State for secret input
     const [isCreating, setIsCreating] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [successMessageFileUpload, setSuccessMessageFileUpload] = useState("");
     const [errorMessageFileUpload, setErrorMessageFileUpload] = useState("");
-
     const [eventUrl, setEventUrl] = useState(""); // State to store the event URL
 
     const qrCodeRef = useRef(null); // Ref for the QR code
-
 
     const [uploadedImageUrl, setUploadedImageUrl] = useState(""); // To store the uploaded image URL
 
@@ -67,12 +59,9 @@ const CreateEvent = () => {
     const [uploadedQRCodeUrl, setUploadedQRCodeUrl] = useState(""); // Added state for uploaded QR code URL
     const [uploadButtonText, setUploadButtonText] = useState("Subir Imagen");
 
-
     const hiddenCanvasRef = useRef(null); // For the hidden QR code canvas
     const [profileCount, setProfileCount] = useState(0);
     const [maxProfiles, setMaxProfiles] = useState(5); // Default limit
-
-
 
     useEffect(() => {
         // Retrieve user email from localStorage (or session)
@@ -96,15 +85,6 @@ const CreateEvent = () => {
         }
     };
 
-
-
-
-
-
-
-
-
-
     // Function to calculate the age based on the birth date
     const calculateAge = (birthDate) => {
         if (!birthDate) return null;
@@ -121,8 +101,6 @@ const CreateEvent = () => {
     const handleDateChange = (e) => {
         setDateBirth(e.target.value);
     };
-
-
 
     const downloadQRCode = () => {
         const qrCanvas = hiddenCanvasRef.current.querySelector("canvas");
@@ -195,8 +173,6 @@ const CreateEvent = () => {
         setStep(step - 1);
     };
 
-
-
     const handleCreateEvent = async (event) => {
         event.preventDefault();
 
@@ -206,12 +182,12 @@ const CreateEvent = () => {
         }
 
 
- // Retrieve user email from localStorage
- const credentials = JSON.parse(localStorage.getItem("credentials"));
- const userEmail = credentials?.email || ""; // If no email found, default to an empty string
+        // Retrieve user email from localStorage
+        const credentials = JSON.parse(localStorage.getItem("credentials"));
+        const userEmail = credentials?.email || ""; // If no email found, default to an empty string
 
- // Add emoji to the customMessage
- const messageWithEmoji = `${customMessage} 🐾✨`;  // Add an emoji at the end
+        // Add emoji to the customMessage
+        const messageWithEmoji = `${customMessage} 🐾✨`;  // Add an emoji at the end
 
 
         // When submitting, apply the formatting to the pet name.
@@ -233,13 +209,12 @@ const CreateEvent = () => {
         setErrorMessage("");
         setSuccessMessage("");
 
-
         try {
             // Create JSON payload
             const payload = {
                 petId: generatedId,
                 uploadedImageUrl,
-                customMessage:messageWithEmoji,
+                customMessage: messageWithEmoji,
                 petName: formattedName,
                 petColor,
                 petType,
@@ -277,11 +252,11 @@ const CreateEvent = () => {
 
             if (response.data.success) {
                 setSuccessMessage("¡La mascota se ha creado con éxito!");
-// Update profile count in users collection
-            await axios.put("https://us-central1-pet-finder-450419.cloudfunctions.net/update-profile_count", { email: userEmail });
+                // Update profile count in users collection
+                await axios.put("https://us-central1-pet-finder-450419.cloudfunctions.net/update-profile_count", { email: userEmail });
 
-              // ✅ Fetch updated profile count after update
-    fetchUserProfileCount(userEmail);
+                // ✅ Fetch updated profile count after update
+                fetchUserProfileCount(userEmail);
                 // Generate and set the event URL
                 const generatedUrl = `https://pet-finder-navy.vercel.app/pet?petId=${generatedId}`;
                 setEventUrl(generatedUrl);
@@ -332,7 +307,7 @@ const CreateEvent = () => {
 
         try {
             setUploadButtonText("Subiendo...")
-            
+
             // Step 1: Get the signed URL from the Cloud Function
             const response = await axios.post(
                 "https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/add-cover-photo-album",
@@ -424,35 +399,31 @@ const CreateEvent = () => {
 
     };
 
-
     const handlePetNameChange = (e) => {
         setPetName(e.target.value);
 
     };
 
-
     return (
         <div className="create-event-container">
-<Helmet>
-        <title>Crear mascota</title>
-      </Helmet>
+            <Helmet>
+                <title>Crear mascota</title>
+            </Helmet>
             <Header className="header-with-margin" />
 
             <button onClick={handleLogout} className="logout-button">Salir</button>
             <button className="reset-button" onClick={handleReset}>Limpiar</button>
-{/* Navigate to List Pets Page */}
-<button className="list-pets-button" onClick={() => navigate("/list-pets")}>
+            {/* Navigate to List Pets Page */}
+            <button className="list-pets-button" onClick={() => navigate("/list-pets")}>
 
                 Listado
             </button>
             <h2>Creá el perfil de tu mascota</h2>
-<div className="profiles-created">
+            <div className="profiles-created">
                 <p>Perfiles creados: {profileCount} / {maxProfiles}</p>
+            </div>
 
-</div>
 
-
-            {/* Separate Form for File Upload */}
             {/* <h2>Subir Imagen de Portada</h2> */}
             <form onSubmit={handleFileUpload}>
                 <label>Elegí la foto de tu mascota y presioná 'Subir imagen'.</label>
@@ -496,29 +467,8 @@ const CreateEvent = () => {
             <hr />
 
             <form onSubmit={handleCreateEvent}>
-                {/* <label>Ingresá el ID de tu mascota:</label>
-                <input
-                    type="text"
-                    value={petId}
-                    onChange={(e) => setPetId(e.target.value)}
-                    placeholder="ID de tu mascota"
-                    required
-                /> */}
 
                 <label>Nombre de tu mascota:</label>
-                {/* <input
-                    type="text"
-                    value={petName}
-                    onChange={(e) => {
-                        const formattedName = e.target.value
-                            .toLowerCase()
-                            .replace(/\b\w/g, (char) => char.toUpperCase());
-                        setPetName(formattedName);
-                    }}                    placeholder="Nombre de tu mascota"
-                    required
-                />
-                 */}
-
                 <input
                     type="text"
                     value={petName}
@@ -539,7 +489,6 @@ const CreateEvent = () => {
                     required
                 />
 
-
                 <label className="after-race">Raza:</label>
                 <input
                     type="text"
@@ -548,14 +497,6 @@ const CreateEvent = () => {
                     placeholder="Bulldog Francés, Labrador, Maine Coon"
                     required
                 />
-                {/* <label>Género:</label>
-                <input
-                    type="text"
-                    value={petGender}
-                    onChange={(e) => setPetGender(e.target.value)}
-                    placeholder="Nombre de tu mascota"
-                    required
-                /> */}
 
                 <label>Género:</label>
                 <div className="gender-radio-group inline">
@@ -565,8 +506,6 @@ const CreateEvent = () => {
                             value="Male"
                             checked={petGender === "Male"}
                             onChange={(e) => setPetGender(e.target.value)}
-                          
-            
                         />
                         Macho
                     </label>
@@ -576,14 +515,11 @@ const CreateEvent = () => {
                             value="Female"
                             checked={petGender === "Female"}
                             onChange={(e) => setPetGender(e.target.value)}
-                           
+
                         />
                         Hembra
                     </label>
                 </div>
-
-
-
                 <label>Fecha de nacimiento de tu mascota:</label>{dateBirth && (
                     <span style={{ marginLeft: "10px", fontSize: "14px", fontWeight: "bold" }}>
                         {`Edad: ${calculateAge(dateBirth)} años`}
@@ -637,7 +573,6 @@ const CreateEvent = () => {
                     required
                 />
 
-
                 <label>Describí tu mascota:</label>
                 <input
                     type="text"
@@ -645,8 +580,6 @@ const CreateEvent = () => {
                     onChange={(e) => setCustomMessage(e.target.value)}
                     placeholder="Apariencia, comportamiento, personalidad"
                 />
-
-
 
                 {/* <label>Descripción de tu mascota:</label> 
                 <input
@@ -656,7 +589,6 @@ const CreateEvent = () => {
                     placeholder="Descripción de tu mascota"
                     required
                 /> */}
-
 
                 <label>Microchip:</label>
                 <div className="gender-radio-group">
@@ -693,9 +625,6 @@ const CreateEvent = () => {
                     </>
                 )}
 
-
-
-
                 <label>Nombre de contacto</label> {/* New input field */}
                 <input
                     type="text"
@@ -708,7 +637,6 @@ const CreateEvent = () => {
                     }} placeholder="Nombre de contacto"
                     required
                 />
-
                 <label>Teléfono de contacto</label> {/* New input field */}
                 <input
                     type="number"
@@ -755,30 +683,20 @@ const CreateEvent = () => {
 
                 />
 
-<label>Dirección de la veterinaria</label> {/* New input field */}
+                <label>Dirección de la veterinaria</label> {/* New input field */}
                 <input
                     type="text"
                     value={vetAddress}
                     onChange={(e) => setVetAddress(e.target.value)}
                     placeholder="Dirección de la veterinaria"
-
                 />
-                {/* <label>Token de autorización:</label>
-                <input
-                    type="text"
-                    value={secret}
-                    onChange={(e) => setSecret(e.target.value)}
-                    placeholder="Secret Key"
-                    required
-                /> */}
+
                 <button type="submit" disabled={isCreating}>
                     {isCreating ? "Creando..." : "Crear Mascota"}
                 </button>
                 {isCreating && <p>Creando la mascota, por favor espera...</p>}
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 {successMessage && <p className="success-message">{successMessage}</p>}
-
-
 
                 {/* Display the event URL after creation */}
                 {eventUrl && (
@@ -790,8 +708,6 @@ const CreateEvent = () => {
                         <a href={eventUrl} target="_blank" rel="noopener noreferrer">
                             {eventUrl}
                         </a>
-
-
 
                         {/* Generate and display the QR code for the event URL */}
                         <div className="qr-code">
@@ -806,48 +722,6 @@ const CreateEvent = () => {
                             </div>
                         </div>
 
-
-                        {/* <div>
-                            <label>Subir código QR:</label>
-                            <input
-                                type="file"
-                                onChange={(e) => setQrCodeFile(e.target.files[0])}
-                                required
-                            />
-                            <button type="button" onClick={handleQRCodeUpload}>
-                                Subir Código QR
-                            </button>
-
-                            {successMessageFileUpload && (
-                                <p className="success-message">{successMessageFileUpload}</p>
-                            )}
-
-                            {errorMessageFileUpload && (
-                                <p className="error-message">{errorMessageFileUpload}</p>
-                            )}
-
-                            {uploadedQRCodeUrl && (
-                                <div style={{ marginTop: "10px" }}>
-                                    <p>La URL del código QR cargado:</p>
-                                    <input
-                                        type="text"
-                                        value={uploadedQRCodeUrl}
-                                        readOnly
-                                        className="uploadFile"
-                                        style={{ marginTop: "10px" }}
-                                    />
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault(); // Prevent form submission
-                                            navigator.clipboard.writeText(uploadedQRCodeUrl);
-                                        }}
-                                        style={{ marginTop: "10px" }}
-                                    >
-                                        Copiar URL
-                                    </button>
-                                </div>
-                            )}
-                        </div> */}
                     </div>
                 )}
             </form>
